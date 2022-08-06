@@ -19,7 +19,9 @@
     "@angular/cdk": "^14.1.0",
     "@angular/common": "^14.1.0",
     "@angular/compiler": "^14.1.0",
-    "@angular/core": "^14.1.0",
+    "@angular/core": "^14.1.0"
+  },
+  "devDependencies": {
     "@angular/fire": "^7.4.1",
     "@angular/forms": "^14.1.0",
     "@angular/material": "^14.1.0",
@@ -35,9 +37,7 @@
     "primeflex": "^3.2.1",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
-    "zone.js": "~0.11.4"
-  },
-  "devDependencies": {
+    "zone.js": "~0.11.4",
     "@angular-devkit/build-angular": "^14.1.0",
     "@angular/cli": "~14.1.0",
     "@angular/compiler-cli": "^14.1.0",
