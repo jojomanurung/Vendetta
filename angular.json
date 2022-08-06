@@ -1,9 +1,12 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "cli": {
+    "analytics": false
+  },
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "Vendeta": {
+    "Vendetta": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -34,24 +37,38 @@
       },
       "root": "",
       "sourceRoot": "src",
-      "prefix": "p",
+      "prefix": "v",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/vendeta",
+            "outputPath": "dist/Vendetta/browser",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
-              "src/favicon.ico",
-              "src/assets"
+              { "glob": "**/*", "input": "src/assets", "output": "/assets/" },
+              { "glob": "favicon.ico", "input": "src/", "output": "/" }
             ],
             "styles": [
-              "src/styles.scss"
+              "./node_modules/primeflex/primeflex.css",
+              "src/styles.scss",
+              {
+                "input": "src/assets/scss/themes/one-dark/_one-dark.scss",
+                "inject": false,
+                "bundleName": "one-dark"
+              },
+              {
+                "input": "src/assets/scss/themes/monokai/_monokai.scss",
+                "inject": false,
+                "bundleName": "monokai"
+              }
             ],
+            "stylePreprocessorOptions": {
+              "includePaths": ["src/assets/scss"]
+            },
             "scripts": []
           },
           "configurations": {
@@ -59,13 +76,13 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kb",
-                  "maximumError": "1mb"
+                  "maximumWarning": "1mb",
+                  "maximumError": "2mb"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "2kb",
-                  "maximumError": "4kb"
+                  "maximumWarning": "5kb",
+                  "maximumError": "10kb"
                 }
               ],
               "fileReplacements": [
@@ -91,10 +108,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "Vendeta:build:production"
+              "browserTarget": "Vendetta:build:production"
             },
             "development": {
-              "browserTarget": "Vendeta:build:development"
+              "browserTarget": "Vendetta:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -102,7 +119,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "Vendeta:build"
+            "browserTarget": "Vendetta:build"
           }
         },
         "test": {
@@ -122,6 +139,70 @@
             ],
             "scripts": []
           }
+        },
+        "server": {
+          "builder": "@angular-devkit/build-angular:server",
+          "options": {
+            "outputPath": "dist/Vendetta/server",
+            "main": "server.ts",
+            "tsConfig": "tsconfig.server.json",
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "src/assets/scss"
+              ]
+            },
+            "inlineStyleLanguage": "scss"
+          },
+          "configurations": {
+            "production": {
+              "outputHashing": "media",
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ]
+            },
+            "development": {
+              "optimization": false,
+              "sourceMap": true,
+              "extractLicenses": false
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve-ssr": {
+          "builder": "@nguniversal/builders:ssr-dev-server",
+          "configurations": {
+            "development": {
+              "browserTarget": "Vendetta:build:development",
+              "serverTarget": "Vendetta:server:development"
+            },
+            "production": {
+              "browserTarget": "Vendetta:build:production",
+              "serverTarget": "Vendetta:server:production"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "prerender": {
+          "builder": "@nguniversal/builders:prerender",
+          "options": {
+            "routes": [
+              "/"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "Vendetta:build:production",
+              "serverTarget": "Vendetta:server:production"
+            },
+            "development": {
+              "browserTarget": "Vendetta:build:development",
+              "serverTarget": "Vendetta:server:development"
+            }
+          },
+          "defaultConfiguration": "production"
         }
       }
     }

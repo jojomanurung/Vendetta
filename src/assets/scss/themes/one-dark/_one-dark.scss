@@ -1,0 +1,25 @@
+@use '@angular/material' as mat;
+@import "one-dark-palette";
+@import "../../_mixins/colors";
+@include mat.core();
+
+$primary: mat.define-palette($md-primary, 400);
+$accent: mat.define-palette($md-secondary, 400);
+$warn: mat.define-palette($md-warn, 400);
+
+$one-dark-theme: mat.define-dark-theme((
+ color: (
+   primary: $primary,
+   accent: $accent,
+   warn: $warn
+ )
+));
+
+@include mat.all-component-themes($one-dark-theme);
+$color-config: mat.get-color-config($one-dark-theme);
+.custom-theme {
+  @include color-palette($color-config);
+  @include primary-palette($md-primary);
+  @include secondary-palette($md-secondary);
+  @include warn-palette($md-warn);
+}

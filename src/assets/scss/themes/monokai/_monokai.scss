@@ -1,0 +1,25 @@
+@use '@angular/material' as mat;
+@import "monokai-pallete";
+@import "../../_mixins/colors";
+@include mat.core();
+
+$primary: mat.define-palette($md-primary, 400);
+$accent: mat.define-palette($md-secondary, 400);
+$warn: mat.define-palette($md-warn, 400);
+
+$monokai-theme: mat.define-dark-theme((
+ color: (
+   primary: $primary,
+   accent: $accent,
+   warn: $warn
+ )
+));
+
+@include mat.all-component-themes($monokai-theme);
+$color-config: mat.get-color-config($monokai-theme);
+.custom-theme {
+  @include color-palette($monokai-theme);
+  @include primary-palette($md-primary);
+  @include secondary-palette($md-secondary);
+  @include warn-palette($md-warn);
+}
