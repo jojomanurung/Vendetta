@@ -3,11 +3,12 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
+    "start": "node dist/Vendetta/server/main.js",
+    "build": "ng build && ng run Vendetta:server",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "dev:ssr": "ng run Vendetta:serve-ssr",
+    "serve": "ng serve",
     "serve:ssr": "node dist/Vendetta/server/main.js",
     "build:ssr": "ng build && ng run Vendetta:server",
     "prerender": "ng run Vendetta:prerender"
