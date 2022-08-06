@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
-import { GoogleAuthProvider } from "firebase/auth";
 import { Router } from '@angular/router';
 import { User } from '@interface/user/user.type';
 import { lastValueFrom, Observable, of } from 'rxjs';
 import { first, switchMap } from 'rxjs/operators';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
+import firebase from 'firebase/compat/app';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
   user$!: Observable<User | null | undefined>;
@@ -44,7 +44,17 @@ export class AuthService {
     const user = credential.user;
     if (user) {
       this.updateUserData(user);
+      this.sendEmailVerification(user);
     }
+  }
+
+  async sendEmailVerification(user: firebase.User) {
+    const emailVerification = user?.sendEmailVerification();
+    return emailVerification;
+  }
+
+  async verifyEmail(actionCode: string) {
+    return this.afAuth.applyActionCode(actionCode);
   }
 
   async emailSignIn(email: string, password: string) {
@@ -57,14 +67,15 @@ export class AuthService {
   }
 
   async googleSignIn() {
-    const provider = new GoogleAuthProvider();
+    const provider = new firebase.auth.GoogleAuthProvider();
     const credential = await this.afAuth.signInWithPopup(provider);
     const user = credential.user;
     if (user) return this.updateUserData(user);
   }
 
+  /**
+   * Sets user data to firestore on login */
   private updateUserData(user: User) {
-    // Sets user data to firestore on login
     const userRef: AngularFirestoreDocument<User> = this.store.doc(
       `users/${user.uid}`
     );
