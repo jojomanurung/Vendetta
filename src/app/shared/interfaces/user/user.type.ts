@@ -1,6 +1,5 @@
 /**
- * User profile information, visible only to the Firebase project's
- * apps.
+ * User profile information
  *
  */
 export interface User {
