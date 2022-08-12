@@ -1,4 +1,4 @@
-import { Inject, NgModule } from '@angular/core';
+import { ErrorHandler, Inject, NgModule } from '@angular/core';
 import { BrowserModule, DomSanitizer } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -13,6 +13,7 @@ import { MatIconRegistry } from '@angular/material/icon';
 import { PLATFORM_ID } from '@angular/core';
 import { isPlatformServer } from '@angular/common';
 import { MATERIAL_SANITY_CHECKS } from '@angular/material/core';
+import { GlobalErrorHandlerService } from '@service/global-error-handler/global-error-handler.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -23,7 +24,10 @@ import { MATERIAL_SANITY_CHECKS } from '@angular/material/core';
     BrowserAnimationsModule,
     FirebaseModule,
   ],
-  providers: [{ provide: MATERIAL_SANITY_CHECKS, useValue: false }],
+  providers: [
+    { provide: MATERIAL_SANITY_CHECKS, useValue: false },
+    { provide: ErrorHandler, useClass: GlobalErrorHandlerService },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {

@@ -18,7 +18,6 @@ export class SessionsGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    console.log(state);
     const currentUrl = state.url;
     /**
      * Guards for route verify.

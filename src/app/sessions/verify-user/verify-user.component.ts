@@ -31,8 +31,9 @@ export class VerifyUserComponent implements OnInit, OnDestroy {
   async verifyEmail(actionCode: string) {
     this.loadingService.loadingOn();
     await this.authService.verifyEmail(actionCode).catch((error) => {
-      console.error(error);
+      this.loadingService.loadingOff();
       this.router.navigate(['session', 'sign-in']);
+      throw error;
     });
     this.loadingService.loadingOff();
 
