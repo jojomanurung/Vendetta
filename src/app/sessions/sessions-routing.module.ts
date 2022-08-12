@@ -5,23 +5,28 @@ import { SignInComponent } from './sign-in/sign-in.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { VerifyUserComponent } from './verify-user/verify-user.component';
+import { SessionsGuard } from '../shared/guards/sessions/sessions.guard';
 
 const sessions: Routes = [
   {
     path: 'sign-in',
     component: SignInComponent,
+    canActivate: [SessionsGuard],
   },
   {
     path: 'sign-up',
     component: SignUpComponent,
+    canActivate: [SessionsGuard],
   },
   {
     path: 'forgot-password',
     component: ForgotPasswordComponent,
+    canActivate: [SessionsGuard],
   },
   {
     path: 'verify',
     component: VerifyUserComponent,
+    canActivate: [SessionsGuard],
   },
 ];
 

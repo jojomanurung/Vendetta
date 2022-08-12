@@ -1,0 +1,16 @@
+.time-out {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin-bottom: 20px;
+  height: 35px;
+  width: 35px;
+  align-self: center;
+  background-color: var(--primary-color);
+  border-radius: 50%;
+}
+
+a {
+  text-decoration: none;
+}
