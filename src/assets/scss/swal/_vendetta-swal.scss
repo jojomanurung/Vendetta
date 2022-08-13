@@ -1,0 +1,269 @@
+@use "sass:math";
+@use "sass:map";
+@use "../core/functions";
+@import "sweetalert2/src/variables";
+
+$primary: map.get($color-config, "primary");
+$accent: map.get($color-config, "accent");
+$warn: map.get($color-config, "warn");
+$foreground: map.get($color-config, "foreground");
+$background: map.get($color-config, "background");
+// Theme variables
+$vendetta-card: map.get($background, "card");
+$vendetta-background: map.get($background, "background");
+$vendetta-foreground: map.get($foreground, "base");
+$vendetta-primary: functions.get-color($primary);
+$vendetta-accent: functions.get-color($accent);
+$vendetta-warn: functions.get-color($warn);
+$vendetta-button-primary-text: functions.get-contrast-color($primary, 500);
+$vendetta-button-accent-text: functions.get-contrast-color($accent, 500);
+$vendetta-button-warn-text: functions.get-contrast-color($warn, 500);
+$vendetta-disabled: map.get($foreground, "disabled-text");
+
+// Variables to be added to Sweetalert2
+$swal2-button-focus-background: rgba($vendetta-primary, 0.3);
+$swal2-close-button-font-family: Roboto, "Helvetica Neue", sans-serif;
+$swal2-outline-color: lighten($swal2-outline-color, 10%);
+
+$swal2-background: $vendetta-card;
+$swal2-html-container-color: $vendetta-foreground;
+$swal2-title-color: $vendetta-foreground;
+$swal2-backdrop: rgba($vendetta-background, 0.4);
+
+// CONFIRM BUTTON
+$swal2-confirm-button-background-color: $vendetta-primary;
+$swal2-confirm-button-color: $vendetta-button-primary-text;
+$swal2-confirm-button-focus-box-shadow: 0px 0px 2px 3px
+  rgba($vendetta-primary, 0.5);
+
+// DENY BUTTON
+$swal2-deny-button-background-color: $vendetta-accent;
+$swal2-deny-button-color: $vendetta-button-accent-text;
+$swal2-deny-button-focus-box-shadow: 0px 0px 2px 3px
+  rgba($vendetta-accent, 0.5);
+
+// CANCEL BUTTON
+$swal2-cancel-button-background-color: $vendetta-warn;
+$swal2-cancel-button-color: $vendetta-button-warn-text;
+$swal2-cancel-button-focus-box-shadow: 0px 0px 2px 3px
+  rgba($vendetta-warn, 0.5);
+
+// BUTTONS
+$swal2-button-font-weight: 500 !default;
+$swal2-button-darken-hover: rgba($vendetta-primary, 0.3);
+$swal2-button-darken-active: rgba($vendetta-primary, 0.3);
+$swal2-button-focus-box-shadow: none;
+
+// ACTIONS
+$swal2-actions-justify-content: flex-end;
+$swal2-actions-padding: 0 1em;
+
+// CLOSE BUTTON
+$swal2-close-button-hover-color: $vendetta-warn;
+
+// CHECKBOX
+$checkbox-size-px: 18;
+$checkbox-left-px: -2;
+
+// FOOTER
+$swal2-footer-border-color: #555;
+$swal2-footer-color: darken($swal2-html-container-color, 15%);
+
+// TIMER POGRESS BAR
+$swal2-timer-progress-bar-background: rgba($vendetta-foreground, 0.6);
+
+// INPUT
+$swal2-input-color: $vendetta-foreground;
+$swal2-input-background: lighten($vendetta-background, 10%);
+
+// VALIDATION MESSAGE
+$swal2-validation-message-background: lighten($vendetta-background, 10%);
+$swal2-validation-message-color: $vendetta-foreground;
+
+// QUEUE
+$swal2-progress-step-background: lighten($vendetta-background, 25%);
+
+// COMMON VARIABLES FOR CONFIRM AND CANCEL BUTTONS
+$swal2-button-focus-box-shadow: 0 0 0 1px $swal2-background,
+  0 0 0 3px $swal2-outline-color;
+
+// TOAST
+$swal2-toast-background: $vendetta-background;
+$swal2-toast-button-focus-box-shadow: 0 0 0 1px $swal2-background,
+  0 0 0 3px $swal2-outline-color;
+
+@import "sweetalert2/src/sweetalert2";
+
+// Radio button
+.swal2-radio {
+  input {
+    &[type="radio"] {
+      opacity: 0; // hiding the radio input
+    }
+  }
+
+  label {
+    position: relative; // Create a new containing block
+  }
+
+  .swal2-label {
+    padding-left: 0.2em;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 18px;
+      height: 18px;
+      border: 2px solid $vendetta-disabled;
+      border-radius: 100%;
+    }
+  }
+}
+
+[type="radio"] {
+  &:hover + .swal2-label {
+    &::before {
+      border: 2px solid $vendetta-primary;
+    }
+  }
+
+  &:checked + .swal2-label {
+    &::before {
+      border: 2px solid $vendetta-primary;
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      top: 5px;
+      left: 5px;
+      width: 12px;
+      height: 12px;
+      border-radius: 100%;
+      background: $vendetta-primary;
+    }
+  }
+}
+
+// Checkbox
+.swal2-checkbox {
+  input {
+    // position: relative;
+    // left: 30px;
+    // width: 40px;
+    // height: 40px;
+    // transition: opacity 0.3s, transform 0.2s;
+    outline: none;
+    opacity: 0;
+    // background-color: $vendetta-primary;
+    box-shadow: none;
+    appearance: none;
+    pointer-events: none;
+
+    // &:checked,
+    // &:indeterminate {
+    //   background-color: $vendetta-primary;
+    // }
+
+    &:checked + span {
+      &::before {
+        border-color: $vendetta-primary;
+        background-color: $vendetta-primary;
+      }
+
+      &::after {
+        border-color: $vendetta-foreground;
+      }
+    }
+
+    &:indeterminate + span {
+      &::before {
+        border-color: $vendetta-primary;
+        background-color: $vendetta-primary;
+      }
+
+      &::after {
+        transform: translate(
+          $checkbox-left-px * 2px,
+          math.div($checkbox-size-px, 6) * 1px
+        );
+        border-left: 0;
+        border-color: $vendetta-primary;
+      }
+    }
+
+    &:active {
+      transform: scale(0);
+      transition: transform 0s, opacity 0s;
+      opacity: 1;
+
+      + span {
+        &::before {
+          border-color: $vendetta-primary;
+        }
+      }
+    }
+
+    &:checked {
+      &:active + span {
+        &::before {
+          border-color: transparent;
+          background-color: $vendetta-primary;
+        }
+      }
+    }
+
+    &:focus {
+      + span {
+        &::before {
+          box-shadow: 0px 0px 2px 2px rgba($vendetta-primary, 0.75);
+        }
+      }
+    }
+  }
+
+  span {
+    &::before {
+      cursor: pointer;
+      content: "";
+      position: relative;
+      top: 1px;
+      left: $checkbox-left-px * 1px;
+      box-sizing: border-box;
+      width: $checkbox-size-px * 1px;
+      height: $checkbox-size-px * 1px;
+      float: left;
+      transition: border-color 0.2s, background-color 0.2s;
+      border: solid 2px;
+      border-color: $vendetta-disabled;
+      vertical-align: top;
+    }
+
+    &::after {
+      content: "";
+      position: relative;
+      left: (-$checkbox-size-px + $checkbox-left-px) * 1px;
+      width: 10px;
+      height: -$checkbox-left-px * 2px;
+      float: left;
+      transform: translate(
+          math.div($checkbox-size-px, 6) * 1px,
+          -$checkbox-left-px * 2px
+        )
+        rotate(-45deg); /* stylelint-disable-line */
+      border: solid 2px transparent;
+      border-top: 0;
+      border-right: 0;
+    }
+  }
+
+  &:hover {
+    span {
+      &::before {
+        box-shadow: 0px 0px 2px 2px rgba($vendetta-primary, 0.75);
+      }
+    }
+  }
+}

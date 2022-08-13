@@ -1,27 +1,30 @@
-@use 'sass:map';
-@use '@angular/material' as mat;
+@use "sass:map";
+@use "../core/functions";
 
 @mixin color-palette($theme) {
-  $primary: map.get($theme, 'primary');
-  $accent: map.get($theme, 'accent');
-  $warn: map.get($theme, 'warn');
-  $foreground: map.get($theme, 'foreground');
-  $background: map.get($theme, 'background');
+  $primary: map.get($theme, "primary");
+  $accent: map.get($theme, "accent");
+  $warn: map.get($theme, "warn");
+  $foreground: map.get($theme, "foreground");
+  $background: map.get($theme, "background");
 
-  --primary-color: #{mat.get-color-from-palette($primary)};
-  --accent-color: #{mat.get-color-from-palette($accent)};
-  --warn-color: #{mat.get-color-from-palette($warn)};
-  --foreground-color: #{map.get($foreground, 'base')};
-  --background-color: #{map.get($background, 'background')};
-  --primary-text-color: #{map.get($foreground, 'text')};
-  --secondary-text-color: #{map.get($foreground, 'secondary-text')};
-  --disabled-text-color: #{map.get($foreground, 'disabled-text')};
-  --app-navbar-background: #{map.get($background, 'status-bar')};
-  --app-toolbar-background: #{map.get($background, 'app-bar')};
-  --hover: #{map.get($background, 'hover')};
-  --divider: #{map.get($foreground, 'divider')};
-  --wckd-scrollbar-color: #{rgba(mat.get-color-from-palette($primary), 0.25)};
-  --wckd-scrollbar-hover-color: #{rgba(mat.get-color-from-palette($primary), 0.5)};
+  --primary-color: #{functions.get-color($primary)};
+  --accent-color: #{functions.get-color($accent)};
+  --warn-color: #{functions.get-color($warn)};
+  --primary-button-text-color: #{functions.get-contrast-color($primary, 500)};
+  --accent-button-text-color: #{functions.get-contrast-color($accent, 500)};
+  --warn-button-text-color: #{functions.get-contrast-color($warn, 500)};
+  --foreground-color: #{map.get($foreground, "base")};
+  --background-color: #{map.get($background, "background")};
+  --primary-text-color: #{map.get($foreground, "text")};
+  --secondary-text-color: #{map.get($foreground, "secondary-text")};
+  --disabled-text-color: #{map.get($foreground, "disabled-text")};
+  --app-navbar-background: #{map.get($background, "status-bar")};
+  --app-toolbar-background: #{map.get($background, "app-bar")};
+  --hover: #{map.get($background, "hover")};
+  --divider: #{map.get($foreground, "divider")};
+  --scrollbar-color: #{rgba(functions.get-color($primary), 0.25)};
+  --scrollbar-hover-color: #{rgba(functions.get-color($primary), 0.5)};
 }
 
 @mixin primary-palette($color) {
