@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '@service/auth/auth.service';
 import { LoadingService } from '@service/loading/loading.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'v-verify-user',
@@ -12,7 +13,7 @@ export class VerifyUserComponent implements OnInit, OnDestroy {
   timeOut!: NodeJS.Timeout;
   /**
    * Display time out number before redirect.
-   * We use 5 seconds delay
+   * We use 3 seconds delay
    */
   _timeOut: number = 3;
 
@@ -30,23 +31,37 @@ export class VerifyUserComponent implements OnInit, OnDestroy {
 
   async verifyEmail(actionCode: string) {
     this.loadingService.loadingOn();
-    await this.authService.verifyEmail(actionCode).catch((error) => {
-      this.loadingService.loadingOff();
-      this.router.navigate(['session', 'sign-in']);
-      throw error;
-    });
-    this.loadingService.loadingOff();
-
-    const interval = setInterval(() => {
-      this._timeOut--;
-      if (this._timeOut === 0) {
-        clearInterval(interval);
-      }
-    }, 1000);
-
-    this.timeOut = setTimeout(() => {
-      this.router.navigate(['session', 'sign-in']);
-    }, 3050);
+    await this.authService
+      .verifyEmail(actionCode)
+      .then(() => {
+        this.loadingService.loadingOff();
+        const interval = setInterval(() => {
+          this._timeOut--;
+          if (this._timeOut === 0) {
+            clearInterval(interval);
+          }
+        }, 1000);
+        this.timeOut = setTimeout(() => {
+          this.router.navigate(['session', 'sign-in']);
+        }, 3050);
+      })
+      .catch((error) => {
+        this.loadingService.loadingOff();
+        console.log(error.message);
+        const firebaseAuthInvalid = `Firebase: The action code is invalid.`;
+        if (error.message.includes(firebaseAuthInvalid)) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            html: 'Your verify code is invalid. <br/> This can happen if the code is malformed, expired, or has already been used.',
+            heightAuto: false,
+          }).then(() => {
+            this.router.navigate(['session', 'sign-in']);
+          });
+        } else {
+          throw error;
+        }
+      });
   }
 
   ngOnDestroy(): void {
