@@ -38,32 +38,34 @@ export class ChangePasswordComponent implements OnInit {
     const newPassword = this.changePasswordForm.controls['newPassword'].value;
 
     if (this.actionCode && newPassword) {
-      await this.authService.sendChangePassword(this.actionCode, newPassword).then(async () => {
-        this.loadingService.loadingOff();
-        await Swal.fire({
-          icon: 'success',
-          title: 'Change Password Complete',
-          text: 'You will be redirected to sign in page',
-          heightAuto: false,
-        });
-        this.router.navigate(['session', 'sign-in']);
-      }).catch((error) => {
-        this.loadingService.loadingOff();
-        console.log(error.message);
-        const firebaseAuthInvalid = `Firebase: The action code is invalid.`;
-        if (error.message.includes(firebaseAuthInvalid)) {
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            html: 'Your verify code is invalid. <br/> This can happen if the code is malformed, expired, or has already been used.',
+      await this.authService
+        .sendChangePassword(this.actionCode, newPassword)
+        .then(async () => {
+          this.loadingService.loadingOff();
+          await Swal.fire({
+            icon: 'success',
+            title: 'Change Password Complete',
+            text: 'You will be redirected to sign in page',
             heightAuto: false,
-          }).then(() => {
-            this.router.navigate(['session', 'sign-in']);
           });
-        } else {
-          throw error;
-        }
-      });
+          this.router.navigate(['session', 'sign-in']);
+        })
+        .catch(async (error) => {
+          this.loadingService.loadingOff();
+          console.log(error.message);
+          const firebaseAuthInvalid = `Firebase: The action code is invalid.`;
+          if (error.message.includes(firebaseAuthInvalid)) {
+            await Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              html: 'Your verify code is invalid. <br/> This can happen if the code is malformed, expired, or has already been used.',
+              heightAuto: false,
+            });
+            this.router.navigate(['session', 'sign-in']);
+          } else {
+            throw error;
+          }
+        });
     } else {
       this.changePasswordForm.markAllAsTouched();
       return;

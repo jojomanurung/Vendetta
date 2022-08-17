@@ -52,8 +52,7 @@ export class AuthService {
   }
 
   async sendEmailVerification(user: firebase.User) {
-    const emailVerification = user?.sendEmailVerification();
-    return emailVerification;
+    return user?.sendEmailVerification();
   }
 
   async verifyEmail(actionCode: string) {

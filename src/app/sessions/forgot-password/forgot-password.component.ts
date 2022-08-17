@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '@service/auth/auth.service';
 import { LoadingService } from '@service/loading/loading.service';
+import Swal from 'sweetalert2';
 
 @Component({
   templateUrl: './forgot-password.component.html',
@@ -30,6 +31,12 @@ export class ForgotPasswordComponent {
     if (email) {
       await this.authService.sendResetPassword(email);
       this.loadingService.loadingOff();
+      await Swal.fire({
+        icon: 'success',
+        title: 'Reset Password Complete',
+        text: 'We send a link to your email for you to complete the process',
+        heightAuto: false
+      });
       this.router.navigate(['/session/sign-in']);
     } else {
       this.signForm.markAllAsTouched();
