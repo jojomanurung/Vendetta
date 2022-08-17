@@ -4,7 +4,10 @@ import { User } from '@interface/user/user.type';
 import { lastValueFrom, Observable, of } from 'rxjs';
 import { first, switchMap } from 'rxjs/operators';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
+import {
+  AngularFirestore,
+  AngularFirestoreDocument,
+} from '@angular/fire/compat/firestore';
 import firebase from 'firebase/compat/app';
 
 @Injectable({
@@ -74,7 +77,8 @@ export class AuthService {
   }
 
   /**
-   * Sets user data to firestore on login */
+   * Sets user data to firestore on login
+   */
   private updateUserData(user: User) {
     const userRef: AngularFirestoreDocument<User> = this.store.doc(
       `users/${user.uid}`

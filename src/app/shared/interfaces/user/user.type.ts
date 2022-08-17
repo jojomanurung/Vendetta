@@ -1,6 +1,5 @@
 /**
  * User profile information
- *
  */
 export interface User {
   uid: string;
@@ -16,7 +15,6 @@ export interface User {
 
 /**
  * User profile specific permission.
- *
  */
 export interface Permission {
   create: boolean;

@@ -30,17 +30,19 @@ export class SessionsGuard implements CanActivate {
 
   /**
    * Guards for session route.
-   * Add more "else if" condition if other routes needs to be guarded.
    *
-   * Firebase send an email that contain url with query params mode and actionCode
-   * For mode has three types :
+   * @param currentUrl is current state route without any queryParams
+   *
+   * @param mode
+   * is a query param that given from Firebase actionURL send to user email
+   * when requesting *reset password, verify email, recover email*. Current accepted values :
    * - resetPassword
    * - verifyEmail
    * - recoverEmail
    *
-   * And actionCode are unique code to verify the user.
+   * @param actionCode is unique code to verify the user
    *
-   * Our action URL are directed to route "/session" *(without any child route)*
+   * Our action URL are directed to route "/session" *without any child route*
    */
   checkAuthMode(
     currentUrl: string,
