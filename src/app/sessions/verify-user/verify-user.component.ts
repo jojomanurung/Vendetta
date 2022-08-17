@@ -47,20 +47,8 @@ export class VerifyUserComponent implements OnInit, OnDestroy {
       })
       .catch((error) => {
         this.loadingService.loadingOff();
-        console.log(error.message);
-        const firebaseAuthInvalid = `Firebase: The action code is invalid.`;
-        if (error.message.includes(firebaseAuthInvalid)) {
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            html: 'Your verify code is invalid. <br/> This can happen if the code is malformed, expired, or has already been used.',
-            heightAuto: false,
-          }).then(() => {
-            this.router.navigate(['session', 'sign-in']);
-          });
-        } else {
-          throw error;
-        }
+        this.router.navigate(['session', 'sign-in']);
+        throw error.message;
       });
   }
 
