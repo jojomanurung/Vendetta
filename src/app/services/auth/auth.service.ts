@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { User } from '@interface/user/user.type';
+import { User } from '@interfaces/user.type';
 import { lastValueFrom, Observable, of } from 'rxjs';
 import { first, switchMap } from 'rxjs/operators';
 import { AngularFireAuth } from '@angular/fire/compat/auth';

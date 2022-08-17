@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AuthService } from '@service/auth/auth.service';
-import { LoadingService } from '@service/loading/loading.service';
+import { AuthService } from '@services/auth/auth.service';
+import { LoadingService } from '@services/loading/loading.service';
 import Swal from 'sweetalert2';
 
 @Component({
