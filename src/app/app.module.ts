@@ -13,7 +13,7 @@ import { MatIconRegistry } from '@angular/material/icon';
 import { PLATFORM_ID } from '@angular/core';
 import { isPlatformServer } from '@angular/common';
 import { MATERIAL_SANITY_CHECKS } from '@angular/material/core';
-import { GlobalErrorHandlerService } from '@service/global-error-handler/global-error-handler.service';
+import { GlobalErrorHandlerService } from '@services/global-error-handler/global-error-handler.service';
 
 @NgModule({
   declarations: [AppComponent],
