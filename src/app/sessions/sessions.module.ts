@@ -15,6 +15,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { VerifyUserComponent } from './verify-user/verify-user.component';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 
 const Material = [
   MatCardModule,
@@ -31,6 +32,7 @@ const Material = [
     SignUpComponent,
     ForgotPasswordComponent,
     VerifyUserComponent,
+    ChangePasswordComponent,
   ],
   imports: [
     CommonModule,

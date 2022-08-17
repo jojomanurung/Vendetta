@@ -104,6 +104,10 @@ export class AuthService {
     return this.afAuth.sendPasswordResetEmail(email);
   }
 
+  sendChangePassword(code: string, newPassword: string) {
+    return this.afAuth.confirmPasswordReset(code, newPassword);
+  }
+
   async signOut() {
     await this.afAuth.signOut();
     this.router.navigate(['/']);
