@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '@services/auth/auth.service';
 import { LoadingService } from '@services/loading/loading.service';
+import { CustomValidators } from '@validators/custom-validators';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -11,8 +12,11 @@ import Swal from 'sweetalert2';
 })
 export class SignUpComponent {
   signForm = new FormGroup({
-    email: new FormControl('', Validators.required),
-    password: new FormControl('', Validators.required),
+    email: new FormControl('', [Validators.required, CustomValidators.email]),
+    password: new FormControl('', [
+      Validators.required,
+      CustomValidators.password,
+    ]),
   });
 
   constructor(

@@ -11,18 +11,41 @@
         placeholder="Email"
       />
       <mat-icon matSuffix class="mr-2 input-suffix">email</mat-icon>
-      <mat-error>This field is required</mat-error>
+      <mat-error
+        *ngIf="
+          signForm.controls['email'].touched &&
+          signForm.controls['email'].hasError('required')
+        "
+        >This field is required</mat-error
+      >
+      <mat-error *ngIf="signForm.controls['email'].hasError('email')"
+        >Invalid email</mat-error
+      >
     </mat-form-field>
   </div>
   <div class="w-19rem field">
     <mat-form-field class="w-full">
       <input
+        #password
         matInput
         type="password"
         formControlName="password"
         placeholder="Password"
       />
-      <mat-icon matSuffix class="mr-2 input-suffix">lock</mat-icon>
+      <mat-icon
+        matSuffix
+        class="mr-2 input-suffix cursor-pointer"
+        *ngIf="password.type === 'password'"
+        (click)="password.type = 'text'"
+        >visibility</mat-icon
+      >
+      <mat-icon
+        matSuffix
+        class="mr-2 input-suffix cursor-pointer"
+        *ngIf="password.type !== 'password'"
+        (click)="password.type = 'password'"
+        >visibility_off</mat-icon
+      >
       <mat-error>This field is required</mat-error>
     </mat-form-field>
   </div>
