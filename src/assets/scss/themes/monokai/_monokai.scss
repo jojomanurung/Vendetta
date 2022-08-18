@@ -1,24 +1,34 @@
-@use '@angular/material' as mat;
-@import "monokai-pallete";
-@import "../../_mixins/colors";
+@use "@angular/material" as mat;
+@use "../../core/functions";
+
+@import "monokai-palette";
+@import "../../core/variables";
+@import "../../mixins/colors";
 @include mat.core();
 
 $primary: mat.define-palette($md-primary, 400);
 $accent: mat.define-palette($md-secondary, 400);
 $warn: mat.define-palette($md-warn, 400);
 
-$monokai-theme: mat.define-dark-theme((
- color: (
-   primary: $primary,
-   accent: $accent,
-   warn: $warn
- )
-));
+$monokai-theme: functions.define-dark-theme(
+  (
+    color: (
+      primary: $primary,
+      accent: $accent,
+      warn: $warn,
+    ),
+  ),
+  $foreground-dark-theme,
+  $background-dark-theme
+);
 
 @include mat.all-component-themes($monokai-theme);
+
 $color-config: mat.get-color-config($monokai-theme);
+@import "../../swal/vendetta-swal";
+
 .custom-theme {
-  @include color-palette($monokai-theme);
+  @include color-palette($color-config);
   @include primary-palette($md-primary);
   @include secondary-palette($md-secondary);
   @include warn-palette($md-warn);

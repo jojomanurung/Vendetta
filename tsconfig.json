@@ -22,9 +22,12 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "paths": {
-      "@service/*": ["src/app/services/*"],
-      "@interface/*": ["src/app/shared/interfaces/*"],
+      "@services/*": ["src/app/services/*"],
+      "@interfaces/*": ["src/app/shared/interfaces/*"],
       "@components/*": ["src/app/shared/components/*"],
+      "@validators/*": ["src/app/shared/validators/*"],
+      "@guards/*": ["src/app/shared/guards/*"],
+      "@pipes/*": ["src/app/shared/pipes/*"],
     }
   },
   "angularCompilerOptions": {

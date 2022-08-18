@@ -1,10 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { SessionsGuard } from '@guards/sessions.guard';
 import { SessionsComponent } from './sessions.component';
 import { SignInComponent } from './sign-in/sign-in.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { VerifyUserComponent } from './verify-user/verify-user.component';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 
 const sessions: Routes = [
   {
@@ -23,17 +25,17 @@ const sessions: Routes = [
     path: 'verify',
     component: VerifyUserComponent,
   },
+  {
+    path: 'change-password',
+    component: ChangePasswordComponent,
+  },
 ];
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'sign-in',
-    pathMatch: 'full',
-  },
-  {
-    path: '',
     component: SessionsComponent,
+    canActivate: [SessionsGuard],
     children: [...sessions],
   },
 ];

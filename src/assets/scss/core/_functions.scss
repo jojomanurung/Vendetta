@@ -1,0 +1,177 @@
+@use "sass:map";
+@use 'sass:meta';
+
+/// Gets a color from a theme palette (the output of mat-palette).
+/// The hue can be one of the standard values (500, A400, etc.), one of the three preconfigured
+/// hues (default, lighter, darker), or any of the aforementioned suffixed with "-contrast".
+///
+/// @param {Map} $palette The palette from which to extract a color.
+/// @param {String | Number} $hue The hue from the palette to use. If this is a value between 0
+//     and 1, it will be treated as opacity.
+/// @param {Number} $opacity The alpha channel value for the color.
+/// @returns {Color} The color for the given palette, hue, and opacity.
+@function get-color($palette, $hue: default, $opacity: null) {
+  // If hueKey is a number between zero and one, then it actually contains an
+  // opacity value, so recall this function with the default hue and that given opacity.
+  @if meta.type-of($hue) == number and $hue >= 0 and $hue <= 1 {
+    @return get-color($palette, default, $hue);
+  }
+
+  // We cast the $hue to a string, because some hues starting with a number, like `700-contrast`,
+  // might be inferred as numbers by Sass. Casting them to string fixes the map lookup.
+  $color: if(map.has-key($palette, $hue), map.get($palette, $hue), map.get($palette, $hue + ''));
+
+  @if (meta.type-of($color) != color) {
+    // If the $color resolved to something different from a color (e.g. a CSS variable),
+    // we can't apply the opacity anyway so we return the value as is, otherwise Sass can
+    // throw an error or output something invalid.
+    @return $color;
+  }
+
+  @return rgba($color, if($opacity == null, opacity($color), $opacity));
+}
+
+/// For a given hue in a palette, return the contrast color from the map of contrast palettes.
+/// @param {Map} $palette The palette from which to extract a color.
+/// @param {String | Number} $hue The hue for which to get a contrast color.
+/// @returns {Color} The contrast color for the given palette and hue.
+@function get-contrast-color($palette, $hue) {
+  @return map.get(map.get($palette, contrast), $hue);
+}
+
+/// Creates a container object for a light theme to be given to individual component theme mixins.
+/// @param {Map} $config The theme configuration object.
+/// @returns {Map} A complete Angular Material theme map.
+@function define-light-theme($config, $foreground, $background) {
+  $result: $config;
+  @if map.get($config, color) {
+    $color-settings: map.get($config, color);
+    $primary: map.get($color-settings, primary);
+    $accent: map.get($color-settings, accent);
+    $warn: map.get($color-settings, warn);
+    $result: map.merge(
+      $result,
+      (
+        color:
+          _mat-create-light-color-config(
+            $primary,
+            $accent,
+            $warn,
+            $foreground,
+            $background
+          ),
+      )
+    );
+  }
+  @return private-create-backwards-compatibility-theme(
+    _mat-validate-theme($result)
+  );
+}
+
+/// Creates a container object for a dark theme to be given to individual component theme mixins.
+/// @param {Map} $primary The theme configuration object.
+/// @returns {Map} A complete Angular Material theme map.
+@function define-dark-theme($config, $foreground, $background) {
+  $result: $config;
+  @if map.get($config, color) {
+    $color-settings: map.get($config, color);
+    $primary: map.get($color-settings, primary);
+    $accent: map.get($color-settings, accent);
+    $warn: map.get($color-settings, warn);
+    $result: map.merge(
+      $result,
+      (
+        color:
+          _mat-create-dark-color-config(
+            $primary,
+            $accent,
+            $warn,
+            $foreground,
+            $background
+          ),
+      )
+    );
+  }
+  @return private-create-backwards-compatibility-theme(
+    _mat-validate-theme($result)
+  );
+}
+
+// Creates a light-themed color configuration from the specified
+// primary, accent and warn palettes.
+@function _mat-create-light-color-config(
+  $primary,
+  $accent,
+  $warn: null,
+  $foreground-light-theme,
+  $background-light-theme
+) {
+  @return (
+    primary: $primary,
+    accent: $accent,
+    warn: if($warn != null, $warn, define-palette(palette.$red-palette)),
+    is-dark: false,
+    foreground: $foreground-light-theme,
+    background: $background-light-theme
+  );
+}
+
+// Creates a dark-themed color configuration from the specified
+// primary, accent and warn palettes.
+@function _mat-create-dark-color-config(
+  $primary,
+  $accent,
+  $warn: null,
+  $foreground-dark-theme,
+  $background-dark-theme
+) {
+  @return (
+    primary: $primary,
+    accent: $accent,
+    warn: if($warn != null, $warn, define-palette(palette.$red-palette)),
+    is-dark: true,
+    foreground: $foreground-dark-theme,
+    background: $background-dark-theme
+  );
+}
+
+// Validates the specified theme by ensuring that the optional color config defines
+// a primary, accent and warn palette. Returns the theme if no failures were found.
+@function _mat-validate-theme($theme) {
+  @if map.get($theme, color) {
+    $color: map.get($theme, color);
+    @if not map.get($color, primary) {
+      @error 'Theme does not define a valid "primary" palette.';
+    } @else if not map.get($color, accent) {
+      @error 'Theme does not define a valid "accent" palette.';
+    } @else if not map.get($color, warn) {
+      @error 'Theme does not define a valid "warn" palette.';
+    }
+  }
+  @return $theme;
+}
+
+// Creates a backwards compatible theme. Previously in Angular Material, theme objects
+// contained the color configuration directly. With the recent refactoring of the theming
+// system to allow for density and typography configurations, this is no longer the case.
+// To ensure that constructed themes which will be passed to custom theme mixins do not break,
+// we copy the color configuration and put its properties at the top-level of the theme object.
+// Here is an example of a pattern that should still work until it's officially marked as a
+// breaking change:
+//
+//    @mixin my-custom-component-theme($theme) {
+//      .my-comp {
+//        background-color: mat.get-color(map.get($theme, primary));
+//      }
+//    }
+//
+// Note that the `$theme.primary` key does usually not exist since the color configuration
+// is stored in `$theme.color` which contains a property for `primary`. This method copies
+// the map from `$theme.color` to `$theme` for backwards compatibility.
+@function private-create-backwards-compatibility-theme($theme) {
+  @if not map.get($theme, color) {
+    @return $theme;
+  }
+  $color: map.get($theme, color);
+  @return map.merge($theme, $color);
+}

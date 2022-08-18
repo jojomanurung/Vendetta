@@ -1,11 +1,12 @@
 export const environment = {
   firebase: {
-    projectId: 'vendetta-e81be',
-    appId: '1:265035103975:web:b6e57dd7cd1704bbea2c42',
-    storageBucket: 'vendetta-e81be.appspot.com',
-    apiKey: 'AIzaSyDpvAk7FO3zeBY8dZpGqD-UyuwZgsqyyaI',
-    authDomain: 'vendetta-e81be.firebaseapp.com',
-    messagingSenderId: '265035103975',
+    projectId: "vendettawckd",
+    appId: "1:915387864891:web:7103d35975d9eae2b2091e",
+    storageBucket: "vendettawckd.appspot.com",
+    apiKey: "AIzaSyD6NFj5_Chs1YPHANBwukjribOlAB-8mts",
+    authDomain: "vendettawckd.firebaseapp.com",
+    messagingSenderId: "915387864891",
+    measurementId: "G-XB2N8PQWZX"
   },
   production: true
 };
