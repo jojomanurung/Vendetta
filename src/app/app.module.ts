@@ -3,6 +3,7 @@ import { BrowserModule, DomSanitizer } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FirebaseModule } from './firebase.module';
@@ -20,6 +21,7 @@ import { GlobalErrorHandlerService } from '@services/global-error-handler/global
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
     HttpClientModule,
+    RouterModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     FirebaseModule,
@@ -35,7 +37,7 @@ export class AppModule {
     overlayContainer: OverlayContainer,
     iconRegistry: MatIconRegistry,
     domSanitizer: DomSanitizer,
-    @Inject(PLATFORM_ID) private platformId: string
+    @Inject(PLATFORM_ID) platformId: string
   ) {
     overlayContainer.getContainerElement().classList.add('custom-theme');
     const port = process.env['PORT'] || 3000;

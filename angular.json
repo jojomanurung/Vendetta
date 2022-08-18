@@ -77,13 +77,13 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "1mb",
-                  "maximumError": "2mb"
+                  "maximumWarning": "3mb",
+                  "maximumError": "5mb"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "5kb",
-                  "maximumError": "10kb"
+                  "maximumWarning": "15kb",
+                  "maximumError": "25kb"
                 }
               ],
               "fileReplacements": [
@@ -183,6 +183,23 @@
           "builder": "@nguniversal/builders:prerender",
           "options": {
             "routes": ["/"]
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "Vendetta:build:production",
+              "serverTarget": "Vendetta:server:production"
+            },
+            "development": {
+              "browserTarget": "Vendetta:build:development",
+              "serverTarget": "Vendetta:server:development"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "shell": {
+          "builder": "@angular-devkit/build-angular:app-shell",
+          "options": {
+            "route": "shell"
           },
           "configurations": {
             "production": {

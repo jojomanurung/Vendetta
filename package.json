@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "npm run serve:ssr",
-    "build": "npm run build:ssr",
+    "build": "ng run Vendetta:shell:production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "dev:ssr": "ng run Vendetta:serve-ssr",
