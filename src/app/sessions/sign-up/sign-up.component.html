@@ -45,14 +45,14 @@
         class="mr-2 input-suffix cursor-pointer"
         *ngIf="password.type === 'password'"
         (click)="password.type = 'text'"
-        >visibility</mat-icon
+        >visibility_off</mat-icon
       >
       <mat-icon
         matSuffix
         class="mr-2 input-suffix cursor-pointer"
         *ngIf="password.type !== 'password'"
         (click)="password.type = 'password'"
-        >visibility_off</mat-icon
+        >visibility</mat-icon
       >
       <mat-error
         *ngIf="
