@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '@services/auth/auth.service';
 import { LoadingService } from '@services/loading/loading.service';
+import { CustomValidators } from '@validators/custom-validators';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -11,10 +12,16 @@ import Swal from 'sweetalert2';
   styleUrls: ['./change-password.component.scss'],
 })
 export class ChangePasswordComponent implements OnInit {
-  changePasswordForm = new FormGroup({
-    newPassword: new FormControl('', Validators.required),
-    confirmPassword: new FormControl('', Validators.required),
-  });
+  changePasswordForm = new FormGroup(
+    {
+      newPassword: new FormControl('', [
+        Validators.required,
+        CustomValidators.password,
+      ]),
+      confirmPassword: new FormControl('', Validators.required),
+    },
+    CustomValidators.match('newPassword', 'confirmPassword')
+  );
 
   actionCode: string | null = '';
 
@@ -52,19 +59,8 @@ export class ChangePasswordComponent implements OnInit {
         })
         .catch(async (error) => {
           this.loadingService.loadingOff();
-          console.log(error.message);
-          const firebaseAuthInvalid = `Firebase: The action code is invalid.`;
-          if (error.message.includes(firebaseAuthInvalid)) {
-            await Swal.fire({
-              icon: 'error',
-              title: 'Error',
-              html: 'Your verify code is invalid. <br/> This can happen if the code is malformed, expired, or has already been used.',
-              heightAuto: false,
-            });
-            this.router.navigate(['session', 'sign-in']);
-          } else {
-            throw error;
-          }
+          this.router.navigate(['session', 'sign-in']);
+          throw error.message;
         });
     } else {
       this.changePasswordForm.markAllAsTouched();
