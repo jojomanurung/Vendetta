@@ -1,40 +1,58 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AuthService } from '@service/auth/auth.service';
+import { AuthService } from '@services/auth/auth.service';
+import { LoadingService } from '@services/loading/loading.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'v-verify-user',
   templateUrl: './verify-user.component.html',
-  styleUrls: ['./verify-user.component.scss']
+  styleUrls: ['./verify-user.component.scss'],
 })
 export class VerifyUserComponent implements OnInit, OnDestroy {
   timeOut!: NodeJS.Timeout;
+  /**
+   * Display time out number before redirect.
+   * We use 3 seconds delay
+   */
+  _timeOut: number = 3;
 
   constructor(
     private authService: AuthService,
     private router: Router,
-    private route: ActivatedRoute
-  ) { }
+    private route: ActivatedRoute,
+    private loadingService: LoadingService
+  ) {}
 
   ngOnInit(): void {
-    const mode = this.route.snapshot.queryParamMap.get('mode');
     const actionCode = this.route.snapshot.queryParamMap.get('oobCode');
-    if (mode === 'verifyEmail' && actionCode) {
-      this.verifyEmail(actionCode);
-    } else {
-      this.router.navigate(['session', 'sign-up']);
-    }
+    this.verifyEmail(actionCode!);
   }
 
   async verifyEmail(actionCode: string) {
-    await this.authService.verifyEmail(actionCode);
-    this.timeOut = setTimeout(() => {
-      this.router.navigate(['session', 'sign-in']);
-    }, 1000);
+    this.loadingService.loadingOn();
+    await this.authService
+      .verifyEmail(actionCode)
+      .then(() => {
+        this.loadingService.loadingOff();
+        const interval = setInterval(() => {
+          this._timeOut--;
+          if (this._timeOut === 0) {
+            clearInterval(interval);
+          }
+        }, 1000);
+        this.timeOut = setTimeout(() => {
+          this.router.navigate(['session', 'sign-in']);
+        }, 3050);
+      })
+      .catch((error) => {
+        this.loadingService.loadingOff();
+        this.router.navigate(['session', 'sign-in']);
+        throw error.message;
+      });
   }
 
   ngOnDestroy(): void {
     clearTimeout(this.timeOut);
   }
-
 }

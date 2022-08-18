@@ -4,21 +4,56 @@
 <form [formGroup]="signForm">
   <div class="w-19rem field">
     <mat-form-field class="w-full">
-      <input matInput type="email" formControlName="email" placeholder="Email">
+      <input
+        matInput
+        type="email"
+        formControlName="email"
+        placeholder="Email"
+      />
       <mat-icon matSuffix class="mr-2 input-suffix">email</mat-icon>
-      <mat-error>This field is required</mat-error>
+      <mat-error
+        *ngIf="
+          signForm.controls['email'].touched &&
+          signForm.controls['email'].hasError('required')
+        "
+        >This field is required</mat-error
+      >
+      <mat-error *ngIf="signForm.controls['email'].hasError('email')"
+        >Invalid email</mat-error
+      >
     </mat-form-field>
   </div>
   <div class="w-19rem field">
     <mat-form-field class="w-full">
-      <input matInput type="password" formControlName="password" placeholder="Password">
-      <mat-icon matSuffix class="mr-2 input-suffix">lock</mat-icon>
+      <input
+        #password
+        matInput
+        type="password"
+        formControlName="password"
+        placeholder="Password"
+      />
+      <mat-icon
+        matSuffix
+        class="mr-2 input-suffix cursor-pointer"
+        *ngIf="password.type === 'password'"
+        (click)="password.type = 'text'"
+        >visibility_off</mat-icon
+      >
+      <mat-icon
+        matSuffix
+        class="mr-2 input-suffix cursor-pointer"
+        *ngIf="password.type !== 'password'"
+        (click)="password.type = 'password'"
+        >visibility</mat-icon
+      >
       <mat-error>This field is required</mat-error>
     </mat-form-field>
   </div>
 </form>
 <div class="flex justify-content-end align-items-center">
-  <a routerLink="/session/forgot-password" class="forgot-password">Forgot password</a>
+  <a routerLink="/session/forgot-password" class="forgot-password"
+    >Forgot password</a
+  >
 </div>
 <div>
   <button mat-raised-button color="primary" class="w-full" (click)="signIn()">
@@ -26,13 +61,22 @@
   </button>
 </div>
 <div class="mt-3">
-  <span class="sign-up">Don't have an account? Let's <a routerLink="/session/sign-up" class="link">Sign Up</a></span>
+  <span class="sign-up"
+    >Don't have an account? Let's
+    <a routerLink="/session/sign-up" class="link">Sign Up</a></span
+  >
 </div>
 <div class="mt-6 flex justify-content-center align-items-center">
-  <div class="col-5 divider"></div><span class="col-2 text-center or">or</span><div class="col-5 divider"></div>
+  <div class="col-5 divider"></div>
+  <span class="col-2 text-center or">or</span>
+  <div class="col-5 divider"></div>
 </div>
 <div class="mt-3 flex justify-content-center align-items-center">
-  <button  mat-raised-button class="w-full sign-in-google" (click)="googleSignIn()">
+  <button
+    mat-raised-button
+    class="w-full sign-in-google"
+    (click)="googleSignIn()"
+  >
     <mat-icon svgIcon="google_logo" class="mr-2"></mat-icon>
     <span class="m-0">Sign in with Google</span>
   </button>

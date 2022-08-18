@@ -13,6 +13,9 @@ h2 {
   font-size: 0.8em;
   text-decoration: none;
   color: var(--secondary-text-color);
+  &:hover {
+    color: var(--primary-color);
+  }
 }
 
 .sign-up {
@@ -20,6 +23,10 @@ h2 {
   padding-left: 1px;
   .link {
     text-decoration: none;
+    color: var(--accent-color);
+    &:hover {
+      color: var(--primary-color);
+    }
   }
 }
 

@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AuthService } from '@service/auth/auth.service';
-import { LoadingService } from '@service/loading/loading.service';
+import { AuthService } from '@services/auth/auth.service';
+import { LoadingService } from '@services/loading/loading.service';
+import { CustomValidators } from '@validators/custom-validators';
 
 @Component({
   templateUrl: './sign-in.component.html',
@@ -10,7 +11,7 @@ import { LoadingService } from '@service/loading/loading.service';
 })
 export class SignInComponent implements OnInit {
   signForm = new FormGroup({
-    email: new FormControl('', Validators.required),
+    email: new FormControl('', [Validators.required, CustomValidators.email]),
     password: new FormControl('', Validators.required),
   });
   nextUrl!: string | null;
