@@ -48,7 +48,6 @@ export class VerifyUserComponent implements OnInit, OnDestroy {
       .catch((error) => {
         this.loadingService.loadingOff();
         this.router.navigate(['session', 'sign-in']);
-        throw error.message;
       });
   }
 
