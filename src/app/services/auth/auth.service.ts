@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from '@interfaces/user.type';
-import { lastValueFrom, Observable, of } from 'rxjs';
-import { first, switchMap } from 'rxjs/operators';
+import { defer, forkJoin, from, lastValueFrom, Observable, of } from 'rxjs';
+import { concatMap, first, switchMap } from 'rxjs/operators';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import {
   AngularFirestore,
   AngularFirestoreDocument,
 } from '@angular/fire/compat/firestore';
 import firebase from 'firebase/compat/app';
+import * as _ from 'lodash';
 
 @Injectable({
   providedIn: 'root',
@@ -39,40 +40,60 @@ export class AuthService {
     return lastValueFrom(user);
   }
 
-  async emailSignUp(email: string, password: string) {
-    const credential = await this.afAuth.createUserWithEmailAndPassword(
-      email,
-      password
-    );
-    const user = credential.user;
-    if (user) {
-      this.updateUserData(user);
-      this.sendEmailVerification(user);
-    }
+  createUserWithEmail(email: string, password: string) {
+    return this.afAuth.createUserWithEmailAndPassword(email, password);
   }
 
-  async sendEmailVerification(user: firebase.User) {
+  sendEmailVerification(user: firebase.User) {
     return user?.sendEmailVerification();
   }
 
-  async verifyEmail(actionCode: string) {
+  verifyEmail(actionCode: string) {
     return this.afAuth.applyActionCode(actionCode);
   }
 
-  async emailSignIn(email: string, password: string) {
-    const credential = await this.afAuth.signInWithEmailAndPassword(
-      email,
-      password
-    );
-    const user = credential.user;
-    if (user) return this.updateUserData(user);
+  sendPasswordReset(email: string) {
+    return this.afAuth.sendPasswordResetEmail(email);
   }
 
-  async googleSignIn() {
+  confirmPasswordReset(code: string, newPassword: string) {
+    return this.afAuth.confirmPasswordReset(code, newPassword);
+  }
+
+  signInWithEmail(email: string, password: string) {
+    return this.afAuth.signInWithEmailAndPassword(email, password);
+  }
+
+  signInWithGoogle() {
     const provider = new firebase.auth.GoogleAuthProvider();
-    const credential = await this.afAuth.signInWithPopup(provider);
-    const user = credential.user;
-    if (user) return this.updateUserData(user);
+    return this.afAuth.signInWithRedirect(provider);
+  }
+
+  emailSignUp(email: string, password: string) {
+    const credential = from(this.createUserWithEmail(email, password));
+    return credential.pipe(
+      concatMap((val) =>
+        forkJoin({
+          update: defer(() => from(this.updateUserData(val.user!))),
+          send: defer(() => from(this.sendEmailVerification(val.user!))),
+        })
+      )
+    );
+  }
+
+  emailSignIn(email: string, password: string) {
+    const credential = from(this.signInWithEmail(email, password));
+    return credential.pipe(
+      concatMap((val) => defer(() => from(this.updateUserData(val.user!))))
+    );
+  }
+
+  googleSignIn() {
+    const redirect = from(this.signInWithGoogle());
+    return redirect.pipe(
+      concatMap(() => defer(() => from(this.afAuth.getRedirectResult()))),
+      concatMap((val) => defer(() => from(this.updateUserData(val.user!))))
+    );
   }
 
   /**
@@ -83,32 +104,15 @@ export class AuthService {
       `users/${user.uid}`
     );
 
-    const data: User = {
-      uid: user.uid,
-      email: user.email,
-      emailVerified: user.emailVerified,
-      isAnonymous: user.isAnonymous,
-      displayName: user.displayName,
-      photoURL: user.photoURL,
-      phoneNumber: user.phoneNumber,
-      providerId: user.providerId,
-      permission: {
-        create: true,
-        read: true,
-        update: true,
-        delete: true,
-      },
+    const data: User = _.cloneDeep(user);
+    data.permission = {
+      create: true,
+      read: true,
+      update: true,
+      delete: true,
     };
 
     return userRef.set(data, { merge: true });
-  }
-
-  sendResetPassword(email: string) {
-    return this.afAuth.sendPasswordResetEmail(email);
-  }
-
-  sendChangePassword(code: string, newPassword: string) {
-    return this.afAuth.confirmPasswordReset(code, newPassword);
   }
 
   async signOut() {

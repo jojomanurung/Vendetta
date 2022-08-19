@@ -6,7 +6,8 @@ import { SignInComponent } from './sign-in/sign-in.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { VerifyUserComponent } from './verify-user/verify-user.component';
-import { ChangePasswordComponent } from './change-password/change-password.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { ActionComponent } from './action/action.component';
 
 const sessions: Routes = [
   {
@@ -24,18 +25,29 @@ const sessions: Routes = [
   {
     path: 'verify',
     component: VerifyUserComponent,
+    canActivate: [SessionsGuard],
   },
   {
-    path: 'change-password',
-    component: ChangePasswordComponent,
+    path: 'reset-password',
+    component: ResetPasswordComponent,
+    canActivate: [SessionsGuard],
   },
+  {
+    path: 'action',
+    component: ActionComponent,
+    canActivate: [SessionsGuard],
+  }
 ];
 
 const routes: Routes = [
   {
     path: '',
+    redirectTo: 'sign-in',
+    pathMatch: 'full'
+  },
+  {
+    path: '',
     component: SessionsComponent,
-    canActivate: [SessionsGuard],
     children: [...sessions],
   },
 ];

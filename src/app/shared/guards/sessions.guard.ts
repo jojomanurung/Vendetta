@@ -6,13 +6,15 @@ import {
   RouterStateSnapshot,
   UrlTree,
 } from '@angular/router';
+import { User } from '@interfaces/user.type';
+import { AuthService } from '@services/auth/auth.service';
 import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SessionsGuard implements CanActivate {
-  constructor(public router: Router) {}
+  constructor(private router: Router, private authService: AuthService) {}
 
   canActivate(
     route: ActivatedRouteSnapshot,
@@ -44,39 +46,35 @@ export class SessionsGuard implements CanActivate {
    *
    * Our action URL are directed to route "/session" *without any child route*
    */
-  checkAuthMode(
+  async checkAuthMode(
     currentUrl: string,
     mode: string | null,
     actionCode: string | null
   ) {
-    const safeRoute = [
-      '/session/sign-in',
-      '/session/sign-up',
-      '/session/forgot-password',
-    ];
-    const unSafeRoute = ['/session/verify', '/session/change-password'];
-    if (!mode && !actionCode) {
-      if (currentUrl === '/session') {
-        return this.router.createUrlTree(['/session/sign-in']);
-      } else if (safeRoute.includes(currentUrl)) {
-        return true;
-      } else {
-        return false;
-      }
+    const user = await this.authService.getUser();
+    const loggedIn = !!user;
+    console.log(loggedIn, user);
+    if (!mode || !actionCode) {
+      return this.router.createUrlTree(['/session/sign-in']);
+    }
+
+    if (currentUrl === '/session/action' && mode === 'verifyEmail') {
+      return this.router.createUrlTree(['/session/verify'], {
+        queryParams: { mode: mode, oobCode: actionCode },
+      });
+    } else if (currentUrl === '/session/action' && mode === 'resetPassword') {
+      return this.router.createUrlTree(['/session/reset-password'], {
+        queryParams: { mode: mode, oobCode: actionCode },
+      });
+    } else if (currentUrl === '/session/verify' && mode === 'verifyEmail') {
+      return true;
+    } else if (
+      currentUrl === '/session/reset-password' &&
+      mode === 'resetPassword'
+    ) {
+      return true;
     } else {
-      if (currentUrl === '/session' && mode === 'verifyEmail') {
-        return this.router.createUrlTree(['/session/verify'], {
-          queryParams: { oobCode: actionCode },
-        });
-      } else if (currentUrl === '/session' && mode === 'resetPassword') {
-        return this.router.createUrlTree(['/session/change-password'], {
-          queryParams: { oobCode: actionCode },
-        });
-      } else if (unSafeRoute.includes(currentUrl) && !mode && actionCode) {
-        return true;
-      } else {
-        return false;
-      }
+      return loggedIn ? false : this.router.createUrlTree(['/session/sign-in']);
     }
   }
 }
