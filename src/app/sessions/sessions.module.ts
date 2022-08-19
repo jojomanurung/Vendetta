@@ -8,7 +8,8 @@ import { SignInComponent } from './sign-in/sign-in.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { VerifyUserComponent } from './verify-user/verify-user.component';
-import { ChangePasswordComponent } from './change-password/change-password.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { ActionComponent } from './action/action.component';
 import { LoadingComponent } from '@components/loading/loading.component';
 
 import { MatCardModule } from '@angular/material/card';
@@ -34,7 +35,8 @@ const Material = [
     SignUpComponent,
     ForgotPasswordComponent,
     VerifyUserComponent,
-    ChangePasswordComponent,
+    ResetPasswordComponent,
+    ActionComponent,
   ],
   imports: [
     CommonModule,
