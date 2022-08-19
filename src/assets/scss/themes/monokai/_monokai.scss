@@ -25,9 +25,9 @@ $monokai-theme: functions.define-dark-theme(
 @include mat.all-component-themes($monokai-theme);
 
 $color-config: mat.get-color-config($monokai-theme);
-@import "../../swal/vendetta-swal";
 
 .custom-theme {
+  @import "../../swal/vendetta-swal";
   @include color-palette($color-config);
   @include primary-palette($md-primary);
   @include secondary-palette($md-secondary);

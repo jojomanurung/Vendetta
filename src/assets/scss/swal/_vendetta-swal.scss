@@ -28,24 +28,24 @@ $swal2-outline-color: lighten($swal2-outline-color, 10%);
 $swal2-background: $vendetta-card;
 $swal2-html-container-color: $vendetta-foreground;
 $swal2-title-color: $vendetta-foreground;
-$swal2-backdrop: rgba($vendetta-background, 0.4);
+$swal2-backdrop: rgba($vendetta-background, 0.7);
 
 // CONFIRM BUTTON
 $swal2-confirm-button-background-color: $vendetta-primary;
 $swal2-confirm-button-color: $vendetta-button-primary-text;
-$swal2-confirm-button-focus-box-shadow: 0px 0px 2px 3px
+$swal2-confirm-button-focus-box-shadow: 0px 0px 0px 3px
   rgba($vendetta-primary, 0.5);
 
 // DENY BUTTON
 $swal2-deny-button-background-color: $vendetta-accent;
 $swal2-deny-button-color: $vendetta-button-accent-text;
-$swal2-deny-button-focus-box-shadow: 0px 0px 2px 3px
+$swal2-deny-button-focus-box-shadow: 0px 0px 0px 3px
   rgba($vendetta-accent, 0.5);
 
 // CANCEL BUTTON
 $swal2-cancel-button-background-color: $vendetta-warn;
 $swal2-cancel-button-color: $vendetta-button-warn-text;
-$swal2-cancel-button-focus-box-shadow: 0px 0px 2px 3px
+$swal2-cancel-button-focus-box-shadow: 0px 0px 0px 3px
   rgba($vendetta-warn, 0.5);
 
 // BUTTONS

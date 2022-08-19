@@ -25,9 +25,9 @@ $one-dark-theme: functions.define-dark-theme(
 @include mat.all-component-themes($one-dark-theme);
 
 $color-config: mat.get-color-config($one-dark-theme);
-@import "../../swal/vendetta-swal";
 
 .custom-theme {
+  @import "../../swal/vendetta-swal";
   @include color-palette($color-config);
   @include primary-palette($md-primary);
   @include secondary-palette($md-secondary);
