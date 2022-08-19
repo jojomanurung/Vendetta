@@ -69,6 +69,7 @@
             "stylePreprocessorOptions": {
               "includePaths": ["src/assets/scss"]
             },
+            "allowedCommonJsDependencies": ["sweetalert2"],
             "scripts": []
           },
           "configurations": {
@@ -76,13 +77,13 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "1mb",
-                  "maximumError": "2mb"
+                  "maximumWarning": "3mb",
+                  "maximumError": "5mb"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "5kb",
-                  "maximumError": "10kb"
+                  "maximumWarning": "15kb",
+                  "maximumError": "25kb"
                 }
               ],
               "fileReplacements": [
@@ -130,13 +131,8 @@
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
             "inlineStyleLanguage": "scss",
-            "assets": [
-              "src/favicon.ico",
-              "src/assets"
-            ],
-            "styles": [
-              "src/styles.scss"
-            ],
+            "assets": ["src/favicon.ico", "src/assets"],
+            "styles": ["src/styles.scss"],
             "scripts": []
           }
         },
@@ -147,9 +143,7 @@
             "main": "server.ts",
             "tsConfig": "tsconfig.server.json",
             "stylePreprocessorOptions": {
-              "includePaths": [
-                "src/assets/scss"
-              ]
+              "includePaths": ["src/assets/scss"]
             },
             "inlineStyleLanguage": "scss"
           },
@@ -188,9 +182,24 @@
         "prerender": {
           "builder": "@nguniversal/builders:prerender",
           "options": {
-            "routes": [
-              "/"
-            ]
+            "routes": ["/"]
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "Vendetta:build:production",
+              "serverTarget": "Vendetta:server:production"
+            },
+            "development": {
+              "browserTarget": "Vendetta:build:development",
+              "serverTarget": "Vendetta:server:development"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "shell": {
+          "builder": "@angular-devkit/build-angular:app-shell",
+          "options": {
+            "route": "shell"
           },
           "configurations": {
             "production": {
