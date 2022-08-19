@@ -4,7 +4,7 @@
   "tasks": [
     {
       "type": "npm",
-      "script": "start",
+      "script": "start:dev",
       "isBackground": true,
       "problemMatcher": {
         "owner": "typescript",
@@ -15,7 +15,25 @@
             "regexp": "(.*?)"
           },
           "endsPattern": {
-            "regexp": "bundle generation complete"
+            "regexp": "Compiled successfully"
+          }
+        }
+      }
+    },
+    {
+      "type": "npm",
+      "script": "start:ssr",
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "typescript",
+        "pattern": "$tsc",
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": {
+            "regexp": "(.*?)"
+          },
+          "endsPattern": {
+            "regexp": "Compiled successfully"
           }
         }
       }
