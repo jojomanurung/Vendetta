@@ -7,6 +7,7 @@ import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FirebaseModule } from './firebase.module';
+import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { MatIconRegistry } from '@angular/material/icon';
@@ -25,6 +26,9 @@ import { GlobalErrorHandlerService } from '@services/global-error-handler/global
     AppRoutingModule,
     BrowserAnimationsModule,
     FirebaseModule,
+    SweetAlert2Module.forRoot({
+      provideSwal: () => import('sweetalert2/dist/sweetalert2.js'),
+    }),
   ],
   providers: [
     { provide: MATERIAL_SANITY_CHECKS, useValue: false },
