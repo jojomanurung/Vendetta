@@ -6,7 +6,6 @@ import {
   RouterStateSnapshot,
   UrlTree,
 } from '@angular/router';
-import { User } from '@interfaces/user.type';
 import { AuthService } from '@services/auth/auth.service';
 import { Observable } from 'rxjs';
 
@@ -53,9 +52,11 @@ export class SessionsGuard implements CanActivate {
   ) {
     const user = await this.authService.getUser();
     const loggedIn = !!user;
-    console.log(loggedIn, user);
+
     if (!mode || !actionCode) {
-      return this.router.createUrlTree(['/session/sign-in']);
+      return loggedIn
+        ? this.router.createUrlTree(['/'])
+        : this.router.createUrlTree(['/session/sign-in']);
     }
 
     if (currentUrl === '/session/action' && mode === 'verifyEmail') {
@@ -74,7 +75,9 @@ export class SessionsGuard implements CanActivate {
     ) {
       return true;
     } else {
-      return loggedIn ? false : this.router.createUrlTree(['/session/sign-in']);
+      return loggedIn
+        ? this.router.createUrlTree(['/'])
+        : this.router.createUrlTree(['/session/sign-in']);
     }
   }
 }
