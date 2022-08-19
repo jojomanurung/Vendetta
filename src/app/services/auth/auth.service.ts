@@ -9,7 +9,7 @@ import {
   AngularFirestoreDocument,
 } from '@angular/fire/compat/firestore';
 import firebase from 'firebase/compat/app';
-import * as _ from 'lodash';
+import { cloneDeep } from 'lodash-es';
 
 @Injectable({
   providedIn: 'root',
@@ -104,7 +104,7 @@ export class AuthService {
       `users/${user.uid}`
     );
 
-    const data: User = _.cloneDeep(user);
+    const data: User = cloneDeep(user);
     data.permission = {
       create: true,
       read: true,

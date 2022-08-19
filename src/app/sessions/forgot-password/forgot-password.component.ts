@@ -44,7 +44,10 @@ export class ForgotPasswordComponent implements OnDestroy {
         });
         this.router.navigate(['/session/sign-in']);
       })
-      .catch((err) => this.loadingService.loadingOff());
+      .catch((err) => {
+        this.loadingService.loadingOff();
+        throw err;
+      });
   }
 
   googleSignIn() {

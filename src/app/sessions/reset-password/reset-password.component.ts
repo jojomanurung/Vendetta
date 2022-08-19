@@ -56,9 +56,10 @@ export class ResetPasswordComponent implements OnInit {
         });
         this.router.navigate(['session', 'sign-in']);
       })
-      .catch(async (error) => {
+      .catch((err) => {
         this.loadingService.loadingOff();
         this.router.navigate(['session', 'sign-in']);
+        throw err;
       });
   }
 }
