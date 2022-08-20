@@ -10,15 +10,21 @@ import { FirebaseModule } from './firebase.module';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { MatIconRegistry } from '@angular/material/icon';
+import { MatIconRegistry, MatIconModule } from '@angular/material/icon';
 
 import { PLATFORM_ID } from '@angular/core';
 import { isPlatformServer } from '@angular/common';
 import { MATERIAL_SANITY_CHECKS } from '@angular/material/core';
 import { GlobalErrorHandlerService } from '@services/global-error-handler/global-error-handler.service';
+import { MainComponent } from './main/main.component';
+import { LayoutModule } from '@angular/cdk/layout';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatListModule } from '@angular/material/list';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, MainComponent],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
     HttpClientModule,
@@ -29,6 +35,12 @@ import { GlobalErrorHandlerService } from '@services/global-error-handler/global
     SweetAlert2Module.forRoot({
       provideSwal: () => import('sweetalert2/dist/sweetalert2.js'),
     }),
+    LayoutModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatSidenavModule,
+    MatIconModule,
+    MatListModule,
   ],
   providers: [
     { provide: MATERIAL_SANITY_CHECKS, useValue: false },
