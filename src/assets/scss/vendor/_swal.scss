@@ -3,12 +3,13 @@
 @use "../core/functions";
 @import "sweetalert2/src/variables";
 
-$primary: map.get($color-config, "primary");
-$accent: map.get($color-config, "accent");
-$warn: map.get($color-config, "warn");
-$foreground: map.get($color-config, "foreground");
-$background: map.get($color-config, "background");
 // Theme variables
+$primary: #000 !default;
+$accent: #000 !default;
+$warn: #000 !default;
+$foreground: #000 !default;
+$background: #000 !default;
+
 $vendetta-card: map.get($background, "card");
 $vendetta-background: map.get($background, "background");
 $vendetta-foreground: map.get($foreground, "base");
@@ -39,14 +40,12 @@ $swal2-confirm-button-focus-box-shadow: 0px 0px 0px 3px
 // DENY BUTTON
 $swal2-deny-button-background-color: $vendetta-accent;
 $swal2-deny-button-color: $vendetta-button-accent-text;
-$swal2-deny-button-focus-box-shadow: 0px 0px 0px 3px
-  rgba($vendetta-accent, 0.5);
+$swal2-deny-button-focus-box-shadow: 0px 0px 0px 3px rgba($vendetta-accent, 0.5);
 
 // CANCEL BUTTON
 $swal2-cancel-button-background-color: $vendetta-warn;
 $swal2-cancel-button-color: $vendetta-button-warn-text;
-$swal2-cancel-button-focus-box-shadow: 0px 0px 0px 3px
-  rgba($vendetta-warn, 0.5);
+$swal2-cancel-button-focus-box-shadow: 0px 0px 0px 3px rgba($vendetta-warn, 0.5);
 
 // BUTTONS
 $swal2-button-font-weight: 500 !default;
@@ -92,7 +91,13 @@ $swal2-toast-background: $vendetta-background;
 $swal2-toast-button-focus-box-shadow: 0 0 0 1px $swal2-background,
   0 0 0 3px $swal2-outline-color;
 
-@import "sweetalert2/src/sweetalert2";
+@import 'sweetalert2/src/scss/theming';
+@import 'sweetalert2/src/scss/animations';
+
+.v-swal {
+  @include sweetalert2-body();
+  @include sweetalert2-toasts-body();
+}
 
 // Radio button
 .swal2-radio {

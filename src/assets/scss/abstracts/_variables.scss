@@ -1,0 +1,103 @@
+@use "sass:map";
+// This color and config palette are from angular material `_theming` api.
+
+// Get color from md-background for text
+@function colors($md-background, $md-foreground, $is-dark, $define) {
+  $dark-primary-text: rgba(map.get($md-background, contrast, 500), 0.87);
+  $dark-secondary-text: rgba(map.get($md-background, contrast, 500), 0.54);
+  $dark-disabled-text: rgba(black, 0.38);
+  $dark-dividers: rgba(black, 0.12);
+  $dark-focused: rgba(black, 0.12);
+  $light-primary-text: map.get($md-background, contrast, 500);
+  $light-secondary-text: rgba(map.get($md-background, contrast, 500), 0.7);
+  $light-disabled-text: rgba(map.get($md-background, contrast, 500), 0.5);
+  $light-dividers: rgba(map.get($md-background, 300), 0.12);
+  $light-focused: rgba(map.get($md-background, 100), 0.12);
+
+  @if $is-dark == false {
+    @if $define == 'foreground' {
+      // Foreground palette for light themes.
+      $foreground-light-theme: (
+        base: map.get($md-foreground, 500),
+        divider: $dark-dividers,
+        dividers: $dark-dividers,
+        disabled: $dark-disabled-text,
+        disabled-button: rgba(black, 0.26),
+        disabled-text: $dark-disabled-text,
+        elevation: black,
+        hint-text: $dark-disabled-text,
+        secondary-text: $dark-secondary-text,
+        icon: rgba(black, 0.54),
+        icons: rgba(black, 0.54),
+        text: rgba(black, 0.87),
+        slider-min: rgba(black, 0.87),
+        slider-off: rgba(black, 0.26),
+        slider-off-active: rgba(black, 0.38),
+      );
+      @return $foreground-light-theme;
+    } @else {
+      // Background palette for light themes.
+      $background-light-theme: (
+        status-bar: map.get($md-background, 300),
+        app-bar: map.get($md-background, 100),
+        background: map.get($md-background, 50),
+        hover: rgba(black, 0.04),
+        card: white,
+        dialog: white,
+        disabled-button: rgba(black, 0.12),
+        raised-button: white,
+        focused-button: $dark-focused,
+        selected-button: map.get($md-background, 300),
+        selected-disabled-button: map.get($md-background, 400),
+        disabled-button-toggle: map.get($md-background, 200),
+        unselected-chip: map.get($md-background, 300),
+        disabled-list-option: map.get($md-background, 200),
+        tooltip: map.get($md-background, 700),
+      );
+      @return $background-light-theme;
+    }
+
+  } @else {
+    @if $define == 'foreground' {
+      // Foreground palette for dark themes. Also can be used for non white background theme
+      $foreground-dark-theme: (
+        base: map.get($md-foreground, 500),
+        divider: $light-dividers,
+        dividers: $light-dividers,
+        disabled: $light-disabled-text,
+        disabled-button: rgba(white, 0.3),
+        disabled-text: $light-disabled-text,
+        elevation: black,
+        hint-text: $light-disabled-text,
+        secondary-text: $light-secondary-text,
+        icon: $light-primary-text,
+        icons: $light-primary-text,
+        text: $light-primary-text,
+        slider-min: white,
+        slider-off: rgba(white, 0.3),
+        slider-off-active: rgba(white, 0.3),
+      );
+      @return $foreground-dark-theme;
+    } @else {
+      // Background palette for dark themes. Also can be used for non white background theme
+      $background-dark-theme: (
+        status-bar: map.get($md-background, 900),
+        app-bar: map.get($md-background, 700),
+        background: map.get($md-background, 700),
+        hover: rgba(white, 0.04),
+        card: map.get($md-background, 500),
+        dialog: map.get($md-background, 500),
+        disabled-button: rgba(white, 0.12),
+        raised-button: map.get($md-background, 800),
+        focused-button: $light-focused,
+        selected-button: map.get($md-background, 900),
+        selected-disabled-button: map.get($md-background, 700),
+        disabled-button-toggle: black,
+        unselected-chip: map.get($md-background, 700),
+        disabled-list-option: black,
+        tooltip: map.get($md-background, 400),
+      );
+      @return $background-dark-theme;
+    }
+  }
+}

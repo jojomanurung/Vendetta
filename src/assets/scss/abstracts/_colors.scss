@@ -19,8 +19,8 @@
   --primary-text-color: #{map.get($foreground, "text")};
   --secondary-text-color: #{map.get($foreground, "secondary-text")};
   --disabled-text-color: #{map.get($foreground, "disabled-text")};
-  --app-navbar-background: #{map.get($background, "status-bar")};
-  --app-toolbar-background: #{map.get($background, "app-bar")};
+  --navbar-background: #{map.get($background, "status-bar")};
+  --toolbar-background: #{map.get($background, "app-bar")};
   --hover: #{map.get($background, "hover")};
   --divider: #{map.get($foreground, "divider")};
   --scrollbar-color: #{rgba(functions.get-color($primary), 0.25)};
@@ -76,4 +76,19 @@
   --warn-A200: #{map.get($color, A200)};
   --warn-A400: #{map.get($color, A400)};
   --warn-A700: #{map.get($color, A700)};
+}
+
+@mixin theming($theme, $primary, $secondary, $warn) {
+  @if $theme {
+    @include color-palette($theme);
+  }
+  @if $primary {
+    @include primary-palette($primary);
+  }
+  @if $secondary {
+    @include secondary-palette($secondary);
+  }
+  @if $warn {
+    @include warn-palette($warn);
+  }
 }

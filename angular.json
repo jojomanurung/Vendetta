@@ -56,12 +56,12 @@
               "./node_modules/primeflex/primeflex.css",
               "src/styles.scss",
               {
-                "input": "src/assets/scss/themes/one-dark/_one-dark.scss",
+                "input": "src/assets/scss/themes/one-dark/_index.scss",
                 "inject": false,
                 "bundleName": "one-dark"
               },
               {
-                "input": "src/assets/scss/themes/monokai/_monokai.scss",
+                "input": "src/assets/scss/themes/monokai/_index.scss",
                 "inject": false,
                 "bundleName": "monokai"
               }

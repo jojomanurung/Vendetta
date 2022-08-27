@@ -1,0 +1,36 @@
+@use "@angular/material" as mat;
+@use "import";
+
+@include mat.core();
+
+$foreground-dark-theme: import.var-colors(import.$md-background, import.$md-foreground, true, 'foreground');
+$background-dark-theme: import.var-colors(import.$md-background, import.$md-foreground, true, 'background');
+$primary: mat.define-palette(import.$md-primary, 400);
+$accent: mat.define-palette(import.$md-secondary, 400);
+$warn: mat.define-palette(import.$md-warn, 400);
+
+$one-dark-theme: import.define-dark-theme(
+  (
+    color: (
+      primary: $primary,
+      accent: $accent,
+      warn: $warn,
+    ),
+  ),
+  $foreground-dark-theme,
+  $background-dark-theme
+);
+
+$color-config: mat.get-color-config($one-dark-theme);
+
+@mixin theming() {
+  body {
+    @include mat.all-component-themes($one-dark-theme);
+    @include import.colors-theming(
+      $color-config,
+      import.$md-primary,
+      import.$md-secondary,
+      import.$md-warn
+    );
+  }
+}

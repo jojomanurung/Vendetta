@@ -1,0 +1,12 @@
+@use "sass:map";
+@use "theming";
+@use "../../vendor/swal" with (
+  $primary: map.get(theming.$color-config, "primary"),
+  $accent: map.get(theming.$color-config, "accent"),
+  $warn: map.get(theming.$color-config, "warn"),
+  $foreground: map.get(theming.$color-config, "foreground"),
+  $background: map.get(theming.$color-config, "background"),
+);
+
+@include theming.theming();
+
