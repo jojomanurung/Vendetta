@@ -11,7 +11,7 @@ function isAngularFireError(err: any): err is AngularFireError {
 }
 
 @Injectable()
-export class GlobalErrorHandlerService implements ErrorHandler {
+export class ErrorService implements ErrorHandler {
   constructor() {}
 
   handleError(error: any): void {

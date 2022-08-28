@@ -21,11 +21,11 @@ $monokai-theme: import.define-dark-theme(
   $background-dark-theme
 );
 
+@include mat.all-component-themes($monokai-theme);
 $color-config: mat.get-color-config($monokai-theme);
 
 @mixin theming() {
   body {
-    @include mat.all-component-themes($monokai-theme);
     @include import.colors-theming(
       $color-config,
       import.$md-primary,

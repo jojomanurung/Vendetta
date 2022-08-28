@@ -21,11 +21,11 @@ $one-dark-theme: import.define-dark-theme(
   $background-dark-theme
 );
 
+@include mat.all-component-themes($one-dark-theme);
 $color-config: mat.get-color-config($one-dark-theme);
 
 @mixin theming() {
   body {
-    @include mat.all-component-themes($one-dark-theme);
     @include import.colors-theming(
       $color-config,
       import.$md-primary,

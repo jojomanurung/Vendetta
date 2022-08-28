@@ -15,7 +15,7 @@ import { MatIconRegistry, MatIconModule } from '@angular/material/icon';
 import { PLATFORM_ID } from '@angular/core';
 import { isPlatformServer } from '@angular/common';
 import { MATERIAL_SANITY_CHECKS } from '@angular/material/core';
-import { GlobalErrorHandlerService } from '@services/global-error-handler/global-error-handler.service';
+import { ErrorService } from '@services/error/error.service';
 import { MainComponent } from './main/main.component';
 import { LayoutModule } from '@angular/cdk/layout';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -44,7 +44,7 @@ import { MatListModule } from '@angular/material/list';
   ],
   providers: [
     { provide: MATERIAL_SANITY_CHECKS, useValue: false },
-    { provide: ErrorHandler, useClass: GlobalErrorHandlerService },
+    { provide: ErrorHandler, useClass: ErrorService },
   ],
   bootstrap: [AppComponent],
 })
@@ -55,7 +55,6 @@ export class AppModule {
     domSanitizer: DomSanitizer,
     @Inject(PLATFORM_ID) platformId: string
   ) {
-    overlayContainer.getContainerElement().classList.add('custom-theme');
     const port = process.env['PORT'] || 3000;
     const domain = isPlatformServer(platformId)
       ? `http://localhost:${port}/`
