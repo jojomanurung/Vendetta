@@ -9,7 +9,6 @@ import { AppComponent } from './app.component';
 import { FirebaseModule } from './firebase.module';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 
-import { OverlayContainer } from '@angular/cdk/overlay';
 import { MatIconRegistry, MatIconModule } from '@angular/material/icon';
 
 import { PLATFORM_ID } from '@angular/core';
@@ -50,7 +49,6 @@ import { MatListModule } from '@angular/material/list';
 })
 export class AppModule {
   constructor(
-    overlayContainer: OverlayContainer,
     iconRegistry: MatIconRegistry,
     domSanitizer: DomSanitizer,
     @Inject(PLATFORM_ID) platformId: string
