@@ -5,7 +5,6 @@ import { LoadingService } from '@services/loading/loading.service';
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'v-verify-user',
   templateUrl: './verify-user.component.html',
   styleUrls: ['./verify-user.component.scss'],
 })

@@ -7,7 +7,6 @@ import { CustomValidators } from '@validators/custom-validators';
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'v-reset-password',
   templateUrl: './reset-password.component.html',
   styleUrls: ['./reset-password.component.scss'],
 })
