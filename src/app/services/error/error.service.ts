@@ -70,6 +70,13 @@ export class ErrorService implements ErrorHandler {
         html: 'Incorrect password. <br> Please try again.',
         heightAuto: false,
       });
+    } else if (errorCode === 'auth/too-many-requests') {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        html: 'Access to this account has been temporarily disabled due to many failed login attempts. You can immediately restore it by resetting your password or you can try again later.',
+        heightAuto: false,
+      });
     } else {
       Swal.fire({
         icon: 'error',
