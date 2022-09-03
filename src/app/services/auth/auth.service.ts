@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from '@interfaces/user.type';
-import { BehaviorSubject, defer, from, of } from 'rxjs';
-import { concatMap } from 'rxjs/operators';
+import { defer, from, Observable, of } from 'rxjs';
+import { concatMap, map } from 'rxjs/operators';
 import { Firestore, doc, setDoc, docSnapshots } from '@angular/fire/firestore';
 import {
   applyActionCode,
@@ -23,25 +23,17 @@ import {
   providedIn: 'root',
 })
 export class AuthService {
-  private _userSubject: BehaviorSubject<any> = new BehaviorSubject(null);
-  userSubject = this._userSubject.asObservable();
-
   constructor(
     private auth: Auth,
     private store: Firestore,
     private router: Router
-  ) {
-    onAuthStateChanged(this.auth, (user) => {
-      if (user) {
-        const userRef = doc(this.store, `users/${user.uid}`);
-        const user$ = docSnapshots(userRef);
-        this._userSubject.next(user$);
-      } else {
-        this._userSubject.next(null);
-      }
-    });
-  }
+  ) {}
 
+  /**
+   * Get current user data
+   * @note Use this if you need user data once
+   * @returns Promise User
+   */
   getUser() {
     return new Promise<User | null>((resolve) => {
       onAuthStateChanged(this.auth, (user) => {
@@ -49,6 +41,29 @@ export class AuthService {
           resolve(user);
         } else {
           resolve(null);
+        }
+      });
+    });
+  }
+
+  /**
+   * Get current user data from collection.
+   * @note Use this if you want to listen every user state
+   * @returns Observable User
+   */
+  getUser$() {
+    return new Observable<any>((subs) => {
+      onAuthStateChanged(this.auth, (auth) => {
+        if (auth) {
+          const userRef = doc(this.store, `users/${auth.uid}`);
+          const user$ = docSnapshots(userRef);
+          const unsubs = user$.pipe(map((val) => val.data())).subscribe((al) => {
+            subs.next(al);
+            unsubs.unsubscribe();
+            subs.complete();
+          });
+        } else {
+          subs.next(null);
         }
       });
     });
@@ -93,11 +108,10 @@ export class AuthService {
     const redirect = defer(() => from(getRedirectResult(this.auth)));
     return redirect.pipe(
       concatMap((val) => {
-        console.log(val);
         if (val && val.user) {
           return defer(() => from(this.updateUserData(val.user)));
         } else {
-          return of(null)
+          return of(null);
         }
       })
     );

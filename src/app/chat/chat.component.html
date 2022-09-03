@@ -1,0 +1,24 @@
+<ng-container *ngIf="chat$ | async as chat">
+  <div class="top">
+    <p>https://firestore-megachat.firebaseapp.com/chats/{{ chat.id }}</p>
+  </div>
+
+  <div class="chat">
+    <div class="msg" *ngFor="let msg of chat.messages; trackBy: trackByCreated">
+      <div class="user">
+        <img [src]="msg.user?.photoURL" />
+        <div>
+          <span>{{ msg.user?.displayName }}</span>
+        </div>
+      </div>
+
+      <p>{{ msg.content }}</p>
+    </div>
+  </div>
+
+  <div class="form">
+    <input [(ngModel)]="newMsg" (keydown.enter)="submit(chat.id)" />
+
+    <button (click)="submit(chat.id)">Send</button>
+  </div>
+</ng-container>

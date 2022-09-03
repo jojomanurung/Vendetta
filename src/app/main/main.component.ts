@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
+import { ChatService } from '@services/chat/chat.service';
 
 @Component({
   selector: 'v-main',
@@ -16,6 +17,10 @@ export class MainComponent {
       shareReplay()
     );
 
-  constructor(private breakpointObserver: BreakpointObserver) {}
+  constructor(private breakpointObserver: BreakpointObserver, private chat: ChatService) {}
+
+  async createChat() {
+    await this.chat.create();
+  }
 
 }

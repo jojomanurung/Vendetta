@@ -9,7 +9,13 @@ import { MainComponent } from './main/main.component';
  * This is to avoid route that need different view rendered
  * inside navigation and toolbar.
  */
-const main: Routes = [];
+const main: Routes = [
+  {
+    path: 'chats',
+    loadChildren: () =>
+      import('./chat/chat.module').then((m) => m.ChatModule),
+  }
+];
 
 const routes: Routes = [
   {

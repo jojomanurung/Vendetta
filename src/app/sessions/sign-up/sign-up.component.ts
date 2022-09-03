@@ -69,7 +69,6 @@ export class SignUpComponent implements OnInit, OnDestroy {
     this.subs.sink = this.authService.getRedirectResult().subscribe({
       next: (resp) => {
         this.loadingService.loadingOff();
-        console.log(resp);
         if (resp !== null) {
           this.router.navigate(['/']);
         }
