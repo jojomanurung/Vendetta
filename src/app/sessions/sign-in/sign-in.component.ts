@@ -28,6 +28,7 @@ export class SignInComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.nextUrl = this.route.snapshot.queryParamMap.get('next');
+    this.getRedirectResult();
   }
 
   signIn() {
@@ -54,21 +55,29 @@ export class SignInComponent implements OnInit, OnDestroy {
     });
   }
 
-  googleSignIn() {
+  async googleSignIn() {
     this.loadingService.loadingOn();
-    this.subs.sink = this.authService.googleSignIn().subscribe({
-      next: () => {
+    await this.authService.signInWithGoogle();
+  }
+
+  getRedirectResult() {
+    this.loadingService.loadingOn();
+    this.subs.sink = this.authService.getRedirectResult().subscribe({
+      next: (resp) => {
         this.loadingService.loadingOff();
-        if (this.nextUrl) {
-          this.router.navigate([this.nextUrl]);
-        } else {
-          this.router.navigate(['/']);
+        console.log(resp);
+        if (resp !== null) {
+          if (this.nextUrl) {
+            this.router.navigate([this.nextUrl]);
+          } else {
+            this.router.navigate(['/']);
+          }
         }
       },
       error: (err) => {
         this.loadingService.loadingOff();
       },
-    });
+    })
   }
 
   ngOnDestroy(): void {

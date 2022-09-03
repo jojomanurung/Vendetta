@@ -56,7 +56,7 @@ export class SessionsGuard implements CanActivate {
     if (!mode || !actionCode) {
       return loggedIn
         ? this.router.createUrlTree(['/'])
-        : this.router.createUrlTree(['/session/sign-in']);
+        : true
     }
 
     if (currentUrl === '/session/action' && mode === 'verifyEmail') {
@@ -77,7 +77,7 @@ export class SessionsGuard implements CanActivate {
     } else {
       return loggedIn
         ? this.router.createUrlTree(['/'])
-        : this.router.createUrlTree(['/session/sign-in']);
+        : true
     }
   }
 }

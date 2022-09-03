@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '@services/auth/auth.service';
@@ -11,7 +11,7 @@ import Swal from 'sweetalert2';
   templateUrl: './forgot-password.component.html',
   styleUrls: ['./forgot-password.component.scss'],
 })
-export class ForgotPasswordComponent implements OnDestroy {
+export class ForgotPasswordComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
 
   signForm = new FormGroup({
@@ -23,6 +23,10 @@ export class ForgotPasswordComponent implements OnDestroy {
     private loadingService: LoadingService,
     private router: Router
   ) {}
+
+  ngOnInit(): void {
+    this.getRedirectResult();
+  }
 
   async resetPassword() {
     if (this.signForm.invalid) {
@@ -50,17 +54,25 @@ export class ForgotPasswordComponent implements OnDestroy {
       });
   }
 
-  googleSignIn() {
+  async googleSignIn() {
     this.loadingService.loadingOn();
-    this.subs.sink = this.authService.googleSignIn().subscribe({
-      next: () => {
+    await this.authService.signInWithGoogle();
+  }
+
+  getRedirectResult() {
+    this.loadingService.loadingOn();
+    this.subs.sink = this.authService.getRedirectResult().subscribe({
+      next: (resp) => {
         this.loadingService.loadingOff();
-        this.router.navigate(['/']);
+        console.log(resp);
+        if (resp !== null) {
+          this.router.navigate(['/']);
+        }
       },
       error: (err) => {
         this.loadingService.loadingOff();
       },
-    });
+    })
   }
 
   ngOnDestroy(): void {
