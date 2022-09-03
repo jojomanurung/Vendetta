@@ -153,7 +153,7 @@ export class AuthService {
       delete: true,
     };
 
-    return setDoc(userRef, data);
+    return setDoc(userRef, data, {merge: true});
   }
 
   async signOut(firstSignup?: boolean) {

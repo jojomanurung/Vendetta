@@ -33,7 +33,11 @@ export class ChatService {
     const snapShot = docSnapshots(docRef);
     return snapShot.pipe(
       map((doc) => {
-        return { id: doc.id, ...doc.data() };
+        if (doc.exists()) {
+          return { id: doc.id, ...doc.data() };
+        } else {
+          throw new Error('Chat not found');
+        }
       })
     );
   }
@@ -78,8 +82,9 @@ export class ChatService {
 
     return chat$.pipe(
       concatMap((collection) => {
-        // User IDs
         chat = collection;
+
+        // User IDs
         const uids = collection.messages.map((v: any) => v.uid);
 
         // Firestore User Doc Reads
