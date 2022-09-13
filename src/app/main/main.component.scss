@@ -1,25 +1,37 @@
 .primary-sidenav-container {
   height: 100%;
 }
-
 .primary-sidenav {
-  width: 74px;
+  transition: width 0.5s ease-out;
+}
+.primary-sidenav.open-drawer {
+  width: 15rem;
+}
+.primary-sidenav.minimize-drawer {
+  width: 3.5rem;
+  visibility: visible !important;
+  display: block !important;
 }
 
-.sidenav-container {
-  height: 100%;
+.logo-figure {
+  text-align: center;
+  margin: 1rem 0;
 }
 
-.sidenav {
-  width: 200px;
+.logo-img {
+  width: 2rem;
+  height: auto;
 }
 
-.sidenav .mat-toolbar {
-  background: inherit;
+.sidenav-toolbar {
+  border-bottom: 1px solid var(--divider);
 }
 
-.mat-toolbar {
-  position: sticky;
-  top: 0;
-  z-index: 1;
+.primary-content.opened-content {
+  margin-left: 240px !important;
+  transition: margin 0.5s ease-out;
+}
+.primary-content.minimize-content {
+  margin-left: 55px !important;
+  transition: margin 0.5s ease-out;
 }

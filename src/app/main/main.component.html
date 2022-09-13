@@ -1,50 +1,60 @@
 <mat-sidenav-container class="primary-sidenav-container">
   <mat-sidenav
+    #primaryDrawer
     class="primary-sidenav"
     fixedInViewport
     [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
     [mode]="(isHandset$ | async) ? 'over' : 'side'"
     [opened]="(isHandset$ | async) === false"
+    [ngClass]="
+      (isHandset$ | async) === false
+        ? openedDrawer
+          ? 'open-drawer'
+          : 'minimize-drawer'
+        : 'open-drawer'
+    "
   >
-    <mat-nav-list>
-      <a mat-list-item (click)="createChat()">Link 1</a>
-      <a mat-list-item href="#">Link 2</a>
-      <a mat-list-item href="#">Link 3</a>
+    <figure class="logo-figure">
+      <img [src]="logo" alt="Vendetta" class="logo-img" />
+    </figure>
+    <mat-nav-list disableRipple="true">
+      <a
+        mat-list-item
+        *ngFor="let menu of primaryMenu"
+        (click)="selectPrimaryMenu(menu.name); openState()"
+      >
+        <ng-container *ngIf="selectedPrimaryMenu === menu.name; else default">
+          <mat-icon [svgIcon]="menu.icon_active"></mat-icon>
+        </ng-container>
+        <ng-template #default>
+          <mat-icon [svgIcon]="menu.icon_default"></mat-icon>
+        </ng-template>
+      </a>
     </mat-nav-list>
   </mat-sidenav>
-  <mat-sidenav-content>
-    <mat-sidenav-container class="sidenav-container">
-      <mat-sidenav
-        #drawer
-        class="sidenav"
-        fixedInViewport
-        [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-        [mode]="(isHandset$ | async) ? 'over' : 'side'"
-        [opened]="(isHandset$ | async) === false"
+  <mat-sidenav-content
+    class="primary-content"
+    [ngClass]="
+      (isHandset$ | async) === false
+        ? openedDrawer
+          ? 'opened-content'
+          : 'minimize-content'
+        : ''
+    "
+  >
+    <mat-toolbar>
+      <button
+        type="button"
+        aria-label="Toggle sidenav"
+        mat-icon-button
+        *ngIf="isHandset$ | async"
+        (click)="primaryDrawer.toggle()"
       >
-        <mat-toolbar>Menu</mat-toolbar>
-        <mat-nav-list>
-          <a mat-list-item href="#">Link 1</a>
-          <a mat-list-item href="#">Link 2</a>
-          <a mat-list-item href="#">Link 3</a>
-        </mat-nav-list>
-      </mat-sidenav>
-      <mat-sidenav-content>
-        <mat-toolbar>
-          <button
-            type="button"
-            aria-label="Toggle sidenav"
-            mat-icon-button
-            (click)="drawer.toggle()"
-            *ngIf="isHandset$ | async"
-          >
-            <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
-          </button>
-          <span>Vendetta</span>
-        </mat-toolbar>
-        <!-- Add Content Here -->
-        <router-outlet></router-outlet>
-      </mat-sidenav-content>
-    </mat-sidenav-container>
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+      <span>Vendetta</span>
+    </mat-toolbar>
+    <!-- Add Content Here -->
+    <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>
