@@ -1,16 +1,18 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { ChatService } from '@services/chat/chat.service';
 import { MatSidenav } from '@angular/material/sidenav';
+import { SubSink } from 'subsink2';
 
 @Component({
   selector: 'v-main',
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.scss']
 })
-export class MainComponent {
+export class MainComponent implements OnInit, OnDestroy {
+  private subs = new SubSink();
   @ViewChild('primaryDrawer') primaryDrawer!: MatSidenav;
   logo = '../../assets/images/logo.png';
   primaryMenu = [
@@ -40,7 +42,13 @@ export class MainComponent {
       shareReplay()
     );
 
+  isHandset: boolean = false;
+
   constructor(private breakpointObserver: BreakpointObserver, private chat: ChatService) {}
+
+  ngOnInit(): void {
+    this.subs.sink = this.isHandset$.subscribe((resp) => this.isHandset = resp);
+  }
 
   async createChat() {
     await this.chat.create();
@@ -48,11 +56,16 @@ export class MainComponent {
 
   selectPrimaryMenu(name: string) {
     this.selectedPrimaryMenu = name;
-
+    if (this.isHandset) {
+      this.primaryDrawer.toggle();
+    }
   }
 
   openState() {
     this.openedDrawer = !this.openedDrawer;
   }
 
+  ngOnDestroy(): void {
+    this.subs.unsubscribe();
+  }
 }

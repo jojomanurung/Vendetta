@@ -21,7 +21,7 @@
       <a
         mat-list-item
         *ngFor="let menu of primaryMenu"
-        (click)="selectPrimaryMenu(menu.name); openState()"
+        (click)="selectPrimaryMenu(menu.name)"
       >
         <ng-container *ngIf="selectedPrimaryMenu === menu.name; else default">
           <mat-icon [svgIcon]="menu.icon_active"></mat-icon>
@@ -29,6 +29,17 @@
         <ng-template #default>
           <mat-icon [svgIcon]="menu.icon_default"></mat-icon>
         </ng-template>
+      </a>
+      <a
+        mat-list-item
+        class="sidenav-toggle"
+        *ngIf="(isHandset$ | async) === false"
+        (click)="openState()"
+      >
+        <mat-icon *ngIf="!openedDrawer">chevron_right</mat-icon>
+        <mat-icon class="text-right w-full" *ngIf="openedDrawer"
+          >chevron_left</mat-icon
+        >
       </a>
     </mat-nav-list>
   </mat-sidenav>
